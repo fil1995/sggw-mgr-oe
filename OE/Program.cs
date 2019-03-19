@@ -28,12 +28,13 @@ class Program
     private static int licznik = 1000;
     private static int osobnikow = 20;
     private static uint[] populacja = new uint[osobnikow];
-    private static Random random = new Random();
+    
 
     static void Main(string[] args)
     {
+        Random random = new Random();
         // Algorithm a1 = new Algorithm(random, new StopNumEpochs(10));
-        Algorithm a1 = new Algorithm(random, new StopNumEpochs(100));
+        Algorithm a1 = new Algorithm(random, new StopNumEpochs(1000),new SelectionTournament());
         a1.Run<Organism>();
         double aktualny1 = a1.Result().Fenotyp;
 
@@ -55,7 +56,7 @@ class Program
             //Algorithm a = new Algorithm(random, EStop.PopulationDeviation);
             //Algorithm a = new Algorithm(random, EStop.BetterLastEpochs);
             //Algorithm a = new Algorithm(random, EStop.Time);
-            Algorithm a = new Algorithm(random, new StopNumEpochs(10));
+            Algorithm a = new Algorithm(random, new StopNumEpochs(10), new SelectionTournament());
 
             //Algorithm a = new AlgorithmWithOrganismWithRemove(random, EStop.PopulationDeviation);
             //Algorithm a = new AlgorithmWithOrganismWithRemove(random, EStop.BetterLastEpochs);

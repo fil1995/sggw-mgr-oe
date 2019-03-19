@@ -2,7 +2,7 @@
 
 class Algorithm
 {
-    protected Organism[] population;
+    public Organism[] population;
     protected Random r;
     protected Organism best;
     public Organism Best { get { return best; } }
@@ -12,8 +12,10 @@ class Algorithm
 
     protected StopCondition stopCondition;
     public string StopConditionType => stopCondition.StopType;
+    protected SelectionType selectionType;
+    public string selectionTypeName => selectionType.SelectionTypeName;
 
-    public Algorithm(Random r, StopCondition stopCondition, int populationSize = 20)
+    public Algorithm(Random r, StopCondition stopCondition,SelectionType selectionType, int populationSize = 20)
     {
         this.r = r;
         population = new Organism[populationSize];
@@ -23,11 +25,16 @@ class Algorithm
         this.stopCondition = stopCondition;
         stopCondition.Initialize(this);
 
+        this.selectionType = selectionType;
+        selectionType.Initialize(this,r);
 
     }
     public void Run<TOrganism>() where TOrganism : Organism, new()
     {
         GeneratePopulation<TOrganism>();
+        Console.WriteLine("Epoch 0:");
+        Console.WriteLine(GetPopulationValues());
+
         Run();
     }
     void Run()
@@ -68,8 +75,8 @@ class Algorithm
     }
     Organism CreateChild()
     {
-        Organism selA = SelectOrganism();
-        Organism selB = SelectOrganism();
+        Organism selA = selectionType.Select(); // SelectOrganism();
+        Organism selB = selectionType.Select(); // SelectOrganism();
 
         
         Organism newOrganism = selA.RecombinationWithMutation(selB, r);
@@ -161,9 +168,9 @@ class Algorithm
         string res = "";
         foreach (Organism o in population)
         {
-            res += o.Fenotyp + "\t";
+            res += String.Format("{0:0.000}\t", o.Fenotyp);
         }
-        res += "Najlepszy:" + best.Fenotyp + "\n";
+        res += "\nBest:" + best.Fenotyp + "\n";
         return res;
     }
 }
