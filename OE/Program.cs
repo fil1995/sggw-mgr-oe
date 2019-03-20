@@ -20,10 +20,6 @@ class Program
 }
 
 
-
-
-
-
 /// <summary>
 /// LAB 03
 /// Stworzyć trzy wersje algorytmu implementując wybrane strategie radzenia sobie z ograniczeniami.
