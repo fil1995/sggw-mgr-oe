@@ -5,7 +5,13 @@
 /// </summary>
 class OrganismWithRepair : OrganismWithRemove
 {
-
+    public override double Fenotyp
+    {
+        get
+        {
+            return -2 + (genotype * 1.0 / 4000000000.0);
+        }
+    }
     public override Organism RecombinationWithMutation(Organism b, Random r, double prawdopodobienstwo = 0.1)
     {
         Organism o = Recombination(this, b, r).Mutation(r, prawdopodobienstwo);
