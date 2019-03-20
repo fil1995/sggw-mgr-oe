@@ -1,6 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+
+class Program
+{
+
+    static void Main(string[] args)
+    {
+        Random random = new Random();
+
+        new TestAlgorithm<OrganismWithRepair>(
+                                                new Algorithm(  random, 
+                                                                new StopNumEpochs(700), 
+                                                                new SelectionTournament(), 
+                                                                20, 0.2,false
+                                                                )
+                                                );
+       
+        Console.ReadKey();
+    }
+}
+
+
+
+
+
+
 /// <summary>
 /// LAB 03
 /// Stworzyć trzy wersje algorytmu implementując wybrane strategie radzenia sobie z ograniczeniami.
@@ -21,23 +44,3 @@ using System.Linq;
 //- różnorodności populacji.
 /// 
 /// </summary>
-
-
-class Program
-{
-
-    static void Main(string[] args)
-    {
-        Random random = new Random();
-
-        new TestAlgorithm<OrganismWithRepair>(
-                                                new Algorithm(  random, 
-                                                                new StopNumEpochs(700), 
-                                                                new SelectionTournament(), 
-                                                                20, 0.2,false
-                                                                )
-                                                );
-       
-        Console.ReadKey();
-    }
-}
