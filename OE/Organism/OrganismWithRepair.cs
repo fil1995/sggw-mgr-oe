@@ -21,7 +21,8 @@ class OrganismWithRepair : OrganismWithRemove
     }
     public override void SetRandomGenotype(Random r)
     {
-        this.genotype = (uint)(r.Next() % 4000000000);
+        base.SetRandomGenotype(r);
+        this.genotype %= 4000000000u;
     }
 
     public override Organism Repair()

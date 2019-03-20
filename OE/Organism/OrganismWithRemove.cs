@@ -12,7 +12,8 @@ class OrganismWithRemove : Organism
 
     public override void SetRandomGenotype(Random r)
     {
-        this.genotype = (uint)r.Next() % 4000000000;
+        base.SetRandomGenotype(r);
+        this.genotype %= 4000000000u;
     }
 
     public override Organism RecombinationWithMutation(Organism b, Random r, double prawdopodobienstwo = 0.1)

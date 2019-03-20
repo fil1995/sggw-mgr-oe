@@ -17,6 +17,6 @@ abstract class SelectionType
 
     public virtual Organism Select()
     {
-        return a.population[0];
+        throw new NotImplementedException();
     }
 }

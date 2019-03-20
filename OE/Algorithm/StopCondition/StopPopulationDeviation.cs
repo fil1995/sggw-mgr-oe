@@ -9,7 +9,7 @@ class StopPopulationDeviation : StopCondition
     }
     public override bool Stop()
     {
-        if (a.CurrentEpoch > 2 && a.PopulationDeviation() < 0.01)
+        if (a.CurrentEpoch > 2 && a.PopulationDeviation() < deviation)
         {
             return true;
         }

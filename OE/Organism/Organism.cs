@@ -24,13 +24,16 @@ class Organism
 
     public virtual void SetRandomGenotype(Random r)
     {
-        this.genotype = (uint)r.Next() * 2;
+        //this.genotype = (uint)r.Next() * 2;
+        // losuje najpierw 30 bitow, potem jeszcze dwa pozostałe
+        genotype = ((uint)r.Next(1 << 30) << 2) | (uint)r.Next(1 << 2);
+
     }
 
     static public Organism Recombination(Organism a, Organism b, Random r)
     {
         // losujemy punkt podziału
-        int cutPoint = r.Next(1, 30); // losuje taka, aby nie wziąć wszystkiego z jednego rodzica
+        int cutPoint = r.Next(1, 31); // losuje taka, aby nie wziąć wszystkiego z jednego rodzica
 
         uint mask = ~0u >> cutPoint;
 
@@ -42,9 +45,9 @@ class Organism
     public Organism Mutation(Random r, double prawdopodobienstwo = 0.1)
     {
         // mutujemy jeden bit
-        if (r.NextDouble() < prawdopodobienstwo) // 10% wyników
+        if (r.NextDouble() <= prawdopodobienstwo) // 10% wyników
         {
-            genotype ^= (1u << r.Next(0, 30));
+            genotype ^= (1u << r.Next(0, 32));
         }
         return this;
     }

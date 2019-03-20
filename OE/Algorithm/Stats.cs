@@ -46,14 +46,17 @@ class Stats
     }
     public override string ToString()
     {
-        return "Stats  epochs:" + algorithm.CurrentEpoch + " Organism Type:" + algorithm.Best.GetTypeOfOrganism() + " Algotithm Type:" + algorithm.GetTypeOfAlgorithm() +
-                "\nTime: " + time.ElapsedMilliseconds + "milis Stop:" + algorithm.StopConditionType + " \n" +
-                "-----------------" + "\n" +
+        return  "::Stats:: epochs:" + algorithm.CurrentEpoch + " Time: " + time.ElapsedMilliseconds + "milis\n" +
+                "Organism Type:" + algorithm.Best.GetTypeOfOrganism() + 
+                " | Stop condition:" + algorithm.StopConditionType +
+                " | Selection Type:" + algorithm.selectionTypeName +
+                " | Mutation:" + algorithm.mutationPercentage +
+                "\n-----------------\n" +
                 "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
                 "Best: f(" + algorithm.Best.Fenotyp + ")=" + algorithm.Best.Function + "\n" +
-                " 95% on : " + NumEpochFromBest(0.95) + " f(" + historyEpochs[NumEpochFromBest(0.95)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.95)].Function + "\n" +
-                " 90% on : " + NumEpochFromBest(0.9) + " f(" + historyEpochs[NumEpochFromBest(0.9)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.9)].Function + "\n" +
-                " 80% on : " + NumEpochFromBest(0.8) + " f(" + historyEpochs[NumEpochFromBest(0.8)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.8)].Function + "\n";
+                " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.95)].Function + "\n" +
+                " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.9)].Function + "\n" +
+                " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.8)].Function + "\n";
     }
 
 }

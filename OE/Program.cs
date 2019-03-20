@@ -33,8 +33,9 @@ class Program
     static void Main(string[] args)
     {
         Random random = new Random();
+
         // Algorithm a1 = new Algorithm(random, new StopNumEpochs(10));
-        Algorithm a1 = new Algorithm(random, new StopNumEpochs(1000),new SelectionTournament());
+        Algorithm a1 = new Algorithm(random, new StopNumEpochs(700),new SelectionTournament(),20,0.2);
         a1.Run<Organism>();
         double aktualny1 = a1.Result().Fenotyp;
 

@@ -14,11 +14,13 @@ class Algorithm
     public string StopConditionType => stopCondition.StopType;
     protected SelectionType selectionType;
     public string selectionTypeName => selectionType.SelectionTypeName;
+    public double mutationPercentage;
 
-    public Algorithm(Random r, StopCondition stopCondition,SelectionType selectionType, int populationSize = 20)
+    public Algorithm(Random r, StopCondition stopCondition,SelectionType selectionType, int populationSize = 20, double mutationPercentage = 0.1)
     {
         this.r = r;
         population = new Organism[populationSize];
+        this.mutationPercentage = mutationPercentage;
         currentEpoch = 0;
         stats = new Stats(this);
 
@@ -32,24 +34,17 @@ class Algorithm
     public void Run<TOrganism>() where TOrganism : Organism, new()
     {
         GeneratePopulation<TOrganism>();
-        Console.WriteLine("Epoch 0:");
-        Console.WriteLine(GetPopulationValues());
-
         Run();
     }
     void Run()
     {
         stats.StartLogging();
-        //        GeneratePopulation();
         //Console.WriteLine(GetPopulationValues());
-        //Console.WriteLine("Run() --- START --- best=" + best.Fenotyp + " Organism type:" + population[0].GetTypeOfOrganism());
         while (!stopCondition.Stop())
         {
-            //Console.WriteLine(CurrentEpoch + ": " + GetPopulationValues());
             RunEpoch();
-
+            //Console.WriteLine(GetPopulationValues());
         }
-        // Console.WriteLine("Run() --- END --- best="+best.Fenotyp+" Organism type:"+population[0].GetTypeOfOrganism());
         stats.StopLogging();
         Console.WriteLine(stats);
     }
@@ -79,7 +74,7 @@ class Algorithm
         Organism selB = selectionType.Select(); // SelectOrganism();
 
         
-        Organism newOrganism = selA.RecombinationWithMutation(selB, r);
+        Organism newOrganism = selA.RecombinationWithMutation(selB, r, 0.3);
 
         // jeśli osobnik jest niepoprawny, to robimy od nowa rekombinacje max 5 razy
         int j = 0;
@@ -165,10 +160,18 @@ class Algorithm
     }
     public string GetPopulationValues()
     {
-        string res = "";
+        string res = "Population values ("+currentEpoch+" epoch):\n";
+        for (int i = 0; i < population.Length; i++)
+        {
+            res += String.Format("{0:0.000}\t", population[i].Fenotyp);
+            if (i==9)
+            {
+                res += "\n";
+            }
+
+        }
         foreach (Organism o in population)
         {
-            res += String.Format("{0:0.000}\t", o.Fenotyp);
         }
         res += "\nBest:" + best.Fenotyp + "\n";
         return res;
