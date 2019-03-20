@@ -25,94 +25,19 @@ using System.Linq;
 
 class Program
 {
-    private static int licznik = 1000;
-    private static int osobnikow = 20;
-    private static uint[] populacja = new uint[osobnikow];
-    
 
     static void Main(string[] args)
     {
         Random random = new Random();
 
-        // Algorithm a1 = new Algorithm(random, new StopNumEpochs(10));
-        Algorithm a1 = new Algorithm(random, new StopNumEpochs(700),new SelectionTournament(),20,0.2);
-        a1.Run<Organism>();
-        double aktualny1 = a1.Result().Fenotyp;
-
-
+        new TestAlgorithm<OrganismWithRepair>(
+                                                new Algorithm(  random, 
+                                                                new StopNumEpochs(700), 
+                                                                new SelectionTournament(), 
+                                                                20, 0.2,false
+                                                                )
+                                                );
+       
         Console.ReadKey();
-        return;
-
-
-        int minIloscUruchomien = 10;
-        int maxIloscUruchomien = 50;
-        double dokladnosc = 0.00001;
-        double aktDokladnosc = 1;
-        int i = 0;
-        List<double> wyniki = new List<double>();
-        while (minIloscUruchomien > 0 || maxIloscUruchomien > 0 ||  aktDokladnosc > dokladnosc)
-        {
-            i++;
-
-            //Algorithm a = new Algorithm(random, EStop.PopulationDeviation);
-            //Algorithm a = new Algorithm(random, EStop.BetterLastEpochs);
-            //Algorithm a = new Algorithm(random, EStop.Time);
-            Algorithm a = new Algorithm(random, new StopNumEpochs(10), new SelectionTournament());
-
-            //Algorithm a = new AlgorithmWithOrganismWithRemove(random, EStop.PopulationDeviation);
-            //Algorithm a = new AlgorithmWithOrganismWithRemove(random, EStop.BetterLastEpochs);
-            //Algorithm a = new AlgorithmWithOrganismWithRemove(random, EStop.Time);
-            //Algorithm a = new AlgorithmWithOrganismWithRemove(random, EStop.NumEpochs);
-
-            //Algorithm a = new AlgorithmWithOrganismWithRepair(random, EStop.PopulationDeviation);
-            //Algorithm a = new AlgorithmWithOrganismWithRepair(random, EStop.BetterLastEpochs);
-            //Algorithm a = new AlgorithmWithOrganismWithRepair(random, EStop.Time);
-            //Algorithm a = new AlgorithmWithOrganismWithRepair(random, EStop.NumEpochs);
-
-            a.Run<Organism>();
-            double aktualny = a.Result().Fenotyp;
-
-            wyniki.Add(aktualny);
-
-            if (i > 3)
-            {
-                aktDokladnosc = Math.Abs(wyniki[wyniki.Count - 1] - wyniki[wyniki.Count - 2]);
-            }
-
-            minIloscUruchomien--;
-            maxIloscUruchomien--;
-        }
-        Console.WriteLine("Średnia to: " + wyniki.Average());
-        wyniki.Sort();
-        Console.WriteLine("Mediana to: " + Mediana(wyniki));
-        Console.WriteLine("Odchylenie standardowe to: " + OdchylenieStandardowe(wyniki));
-        Console.WriteLine("Przedział ufności dla 95% wyników ze średniej to: " + PrzedzialUfnosci(wyniki).ToString());
-
-        Console.ReadKey();
-    }
-    
-    static double Mediana(List<double> wyniki)
-    {
-        wyniki.Sort();
-        if (wyniki.Count % 2 == 0)
-            return wyniki[wyniki.Count / 2];
-        else
-            return (wyniki[wyniki.Count / 2] + wyniki[1 + (wyniki.Count / 2)]) / 2;
-    }
-    static double OdchylenieStandardowe(List<double> wyniki)
-    {
-        double srednia = wyniki.Average();
-        double suma = 0;
-        for (int i = 0; i < wyniki.Count; i++)
-        {
-            suma += Math.Pow(wyniki[i] - srednia, 2);
-        }
-        return Math.Sqrt(suma / wyniki.Count);
-    }
-    static Tuple<double, double> PrzedzialUfnosci(List<double> wyniki)
-    {
-        /// dla 95%
-        /// 
-        return new Tuple<double, double>(wyniki.Average() - OdchylenieStandardowe(wyniki) * 1.96, wyniki.Average() + OdchylenieStandardowe(wyniki) * 1.96);
     }
 }

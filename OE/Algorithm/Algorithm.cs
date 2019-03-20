@@ -2,6 +2,7 @@
 
 class Algorithm
 {
+    bool verbose;
     public Organism[] population;
     protected Random r;
     protected Organism best;
@@ -16,11 +17,12 @@ class Algorithm
     public string selectionTypeName => selectionType.SelectionTypeName;
     public double mutationPercentage;
 
-    public Algorithm(Random r, StopCondition stopCondition,SelectionType selectionType, int populationSize = 20, double mutationPercentage = 0.1)
+    public Algorithm(Random r, StopCondition stopCondition,SelectionType selectionType, int populationSize = 20, double mutationPercentage = 0.1, bool verbose=true)
     {
         this.r = r;
         population = new Organism[populationSize];
         this.mutationPercentage = mutationPercentage;
+        this.verbose = verbose;
         currentEpoch = 0;
         stats = new Stats(this);
 
@@ -46,7 +48,7 @@ class Algorithm
             //Console.WriteLine(GetPopulationValues());
         }
         stats.StopLogging();
-        Console.WriteLine(stats);
+        if(verbose) Console.WriteLine(stats);
     }
     public Organism Result()
     {
