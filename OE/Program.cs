@@ -8,21 +8,21 @@ class Program
         Random random = new Random();
 
 
-        Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(700),
-                                                                new SelectionRouletteRank(),
-                                                                20, 0.4, true
-                                                                );
-        a.Run<Organism>();
-
-
-        //new TestAlgorithm<OrganismWithRepair>(
-        //                                        new Algorithm(random,
+        //Algorithm a = new Algorithm(random,
         //                                                        new StopNumEpochs(700),
         //                                                        new SelectionRouletteRank(),
-        //                                                        20, 0.2, false
-        //                                                        )
-        //                                        );
+        //                                                        20, 0.4, true
+        //                                                        );
+        //a.Run<Organism>();
+
+
+        new TestAlgorithm<OrganismWithRepair>(
+                                                new Algorithm(random,
+                                                                new StopNumEpochs(700),
+                                                                new SelectionRouletteRank(),
+                                                                20, 0.2, false
+                                                                )
+                                                );
 
         Console.ReadKey();
     }
