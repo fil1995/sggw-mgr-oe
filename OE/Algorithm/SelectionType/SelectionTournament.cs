@@ -2,6 +2,7 @@
 
 class SelectionTournament:SelectionType
 {
+    public override bool NeedSortedPopulation => false;
     public override Organism Select()
     {
         int losA = r.Next(0, a.population.Length);

@@ -8,7 +8,7 @@ abstract class SelectionType
     protected Algorithm a;
     protected Random r;
     public string SelectionTypeName => this.GetType().Name;
-
+    public virtual bool NeedSortedPopulation => throw new NotImplementedException("define NeedSortedPopulation");
     public void Initialize(Algorithm a,Random r)
     {
         this.a = a;
@@ -17,6 +17,6 @@ abstract class SelectionType
 
     public virtual Organism Select()
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("define Select");
     }
 }

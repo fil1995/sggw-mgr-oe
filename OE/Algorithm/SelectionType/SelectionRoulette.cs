@@ -2,6 +2,8 @@
 
 class SelectionRoulette:SelectionType
 {
+    public override bool NeedSortedPopulation => false;
+
     public override Organism Select()
     {
         double[] populationFunctions = new double[a.population.Length];

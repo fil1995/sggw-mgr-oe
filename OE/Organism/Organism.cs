@@ -1,9 +1,10 @@
 ﻿using System;
 
 
-class Organism
+class Organism:IComparable<Organism>
 {
     protected uint genotype;
+    protected double? functionVal;
     public virtual double Fenotyp
     {
         get
@@ -15,7 +16,9 @@ class Organism
     {
         get
         {
-            return this.Fenotyp * Math.Sin(this.Fenotyp) * Math.Sin(10 * this.Fenotyp);
+            if(!functionVal.HasValue)
+                functionVal= this.Fenotyp * Math.Sin(this.Fenotyp) * Math.Sin(10 * this.Fenotyp);
+            return functionVal.Value;
         }
     }
     public Organism()
@@ -27,7 +30,7 @@ class Organism
         //this.genotype = (uint)r.Next() * 2;
         // losuje najpierw 30 bitow, potem jeszcze dwa pozostałe
         genotype = ((uint)r.Next(1 << 30) << 2) | (uint)r.Next(1 << 2);
-
+        functionVal = null;
     }
 
     static public Organism Recombination(Organism a, Organism b, Random r)
@@ -40,6 +43,7 @@ class Organism
         Organism o = (Organism)a.MemberwiseClone();
         o.genotype = (a.genotype & mask) | (b.genotype & ~mask);
 
+        o.functionVal = null; // aby od nowa policzyła sie funkcja, bo zmienił się genotyp
         return o; //return new Organism((a.genotype & mask) | (b.genotype & ~mask));
     }
     public Organism Mutation(Random r, double prawdopodobienstwo = 0.1)
@@ -49,6 +53,7 @@ class Organism
         {
             genotype ^= (1u << r.Next(0, 32));
         }
+        this.functionVal = null; // aby od nowa policzyła sie funkcja, bo zmienił się genotyp
         return this;
     }
     public virtual Organism RecombinationWithMutation(Organism b, Random r, double prawdopodobienstwo = 0.1)
@@ -87,5 +92,10 @@ class Organism
     public virtual Organism Repair()
     {
         return this;
+    }
+
+    public int CompareTo(Organism other)
+    {
+        return this.Function.CompareTo(other.Function);
     }
 }

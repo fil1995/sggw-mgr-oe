@@ -3,6 +3,7 @@
 class Algorithm
 {
     bool verbose;
+    bool verbose2;
     public Organism[] population;
     protected Random r;
     protected Organism best;
@@ -17,12 +18,13 @@ class Algorithm
     public string selectionTypeName => selectionType.SelectionTypeName;
     public double mutationPercentage;
 
-    public Algorithm(Random r, StopCondition stopCondition,SelectionType selectionType, int populationSize = 20, double mutationPercentage = 0.1, bool verbose=true)
+    public Algorithm(Random r, StopCondition stopCondition, SelectionType selectionType, int populationSize = 20, double mutationPercentage = 0.1, bool verbose = true, bool verbose2 = false)
     {
         this.r = r;
         population = new Organism[populationSize];
         this.mutationPercentage = mutationPercentage;
         this.verbose = verbose;
+        this.verbose2 = verbose2;
         currentEpoch = 0;
         stats = new Stats(this);
 
@@ -30,7 +32,7 @@ class Algorithm
         stopCondition.Initialize(this);
 
         this.selectionType = selectionType;
-        selectionType.Initialize(this,r);
+        selectionType.Initialize(this, r);
 
     }
     public void Run<TOrganism>() where TOrganism : Organism, new()
@@ -41,14 +43,14 @@ class Algorithm
     void Run()
     {
         stats.StartLogging();
-        //Console.WriteLine(GetPopulationValues());
+        if (verbose2) Console.WriteLine(GetPopulationValues());
         while (!stopCondition.Stop())
         {
             RunEpoch();
-            //Console.WriteLine(GetPopulationValues());
+            if (verbose2) Console.WriteLine(GetPopulationValues());
         }
         stats.StopLogging();
-        if(verbose) Console.WriteLine(stats);
+        if (verbose) Console.WriteLine(stats);
     }
     public Organism Result()
     {
@@ -65,6 +67,11 @@ class Algorithm
             newPopulation[i] = CreateChild();
         }
         population = newPopulation;
+
+        // sprawdzamy czy selekcja wymaga posortowanej populacji
+        if (selectionType.NeedSortedPopulation)
+            Array.Sort(population);
+
         currentEpoch++;
         // aktualizacja najlepszego osobnika
         UpdateBest();
@@ -75,7 +82,7 @@ class Algorithm
         Organism selA = selectionType.Select(); // SelectOrganism();
         Organism selB = selectionType.Select(); // SelectOrganism();
 
-        
+
         Organism newOrganism = selA.RecombinationWithMutation(selB, r, 0.3);
 
         // jeśli osobnik jest niepoprawny, to robimy od nowa rekombinacje max 5 razy
@@ -98,6 +105,11 @@ class Algorithm
         }
         // aktualizacja najlepszego osobnika
         best = BestFromPopulation();
+
+        // sprawdzamy czy selekcja wymaga posortowanej populacji
+        if (selectionType.NeedSortedPopulation)
+            Array.Sort(population);
+
         stats.AfterEpoch();
     }
 
@@ -162,11 +174,11 @@ class Algorithm
     }
     public string GetPopulationValues()
     {
-        string res = "Population values ("+currentEpoch+" epoch):\n";
+        string res = "Population values (" + currentEpoch + " epoch):\n";
         for (int i = 0; i < population.Length; i++)
         {
             res += String.Format("{0:0.000}\t", population[i].Fenotyp);
-            if (i==9)
+            if (i == 9)
             {
                 res += "\n";
             }
@@ -178,4 +190,27 @@ class Algorithm
         res += "\nBest:" + best.Fenotyp + "\n";
         return res;
     }
+
+    static void QuickSort(Organism[] population, int left, int right)
+    {
+        int i = left;
+        int j = right;
+        double pivot = population[(left + right) / 2].Function;
+        while (i < j)
+        {
+            while (population[i].Function < pivot) i++;
+            while (population[j].Function > pivot) j--;
+            if (i <= j)
+            {
+                // zamiana
+                Organism tmp = population[i];
+                population[i++] = population[j];
+                population[j--] = tmp;
+            }
+        }
+        if (left < j) QuickSort(population, left, j);
+        if (i < right) QuickSort(population, i, right);
+    }
+
+
 }
