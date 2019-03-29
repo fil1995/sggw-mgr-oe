@@ -7,22 +7,28 @@ class Program
     {
         Random random = new Random();
 
+        // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
+
+
+        Test01 t = new Test01(random);
+
+
 
         //Algorithm a = new Algorithm(random,
+        //                                                        new StopNumEpochs(50),
+        //                                                        new SelectionTournament(),
+        //                                                        20, 0.2, true, false
+        //                                                        );
+        //a.Run<Organism>(true, "test.txt");
+
+
+        //new TestAlgorithm<OrganismWithRepair>(
+        //                                        new Algorithm(random,
         //                                                        new StopNumEpochs(700),
         //                                                        new SelectionRouletteRank(),
-        //                                                        20, 0.4, true
-        //                                                        );
-        //a.Run<Organism>();
-
-
-        new TestAlgorithm<OrganismWithRepair>(
-                                                new Algorithm(random,
-                                                                new StopNumEpochs(700),
-                                                                new SelectionRouletteRank(),
-                                                                20, 0.2, false
-                                                                )
-                                                );
+        //                                                        20, 0.2, false
+        //                                                        )
+        //                                        );
 
         Console.ReadKey();
     }

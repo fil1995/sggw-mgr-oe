@@ -18,7 +18,10 @@ class Algorithm
     public string selectionTypeName => selectionType.SelectionTypeName;
     public double mutationPercentage;
 
-    public Algorithm(Random r, StopCondition stopCondition, SelectionType selectionType, int populationSize = 20, double mutationPercentage = 0.1, bool verbose = true, bool verbose2 = false)
+    public Algorithm(Random r, 
+        StopCondition stopCondition, SelectionType selectionType, 
+        int populationSize = 20, double mutationPercentage = 0.1, 
+        bool verbose = true, bool verbose2 = false)
     {
         this.r = r;
         population = new Organism[populationSize];
@@ -35,10 +38,11 @@ class Algorithm
         selectionType.Initialize(this, r);
 
     }
-    public void Run<TOrganism>() where TOrganism : Organism, new()
+    public void Run<TOrganism>(bool saveResults=false,string filename="") where TOrganism : Organism, new()
     {
         GeneratePopulation<TOrganism>();
         Run();
+        if (saveResults) stats.Save(filename);
     }
     void Run()
     {

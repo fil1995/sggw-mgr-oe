@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 class Stats
 {
     Algorithm algorithm;
-    List<Organism> historyEpochs;
+    public List<StatsEpoch> historyEpochs;
     System.Diagnostics.Stopwatch time;
     public Stats(Algorithm algorithm)
     {
         this.algorithm = algorithm;
-        historyEpochs = new List<Organism>();
+        historyEpochs = new List<StatsEpoch>();
         time = new System.Diagnostics.Stopwatch();
     }
     public void StartLogging()
@@ -29,14 +27,14 @@ class Stats
     }
     public void AfterEpoch()
     {
-        historyEpochs.Add(algorithm.Best);
+        historyEpochs.Add(new StatsEpoch(algorithm));
     }
     public int NumEpochFromBest(double percentage)
     {
         double betterThan = algorithm.Best.Function * percentage;
         for (int i = 0; i < historyEpochs.Count; i++)
         {
-            if (historyEpochs[i].Function >= betterThan)
+            if (historyEpochs[i].best.Function >= betterThan)
             {
                 return i;
             }
@@ -54,9 +52,25 @@ class Stats
                 "\n-----------------\n" +
                 "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
                 "Best: f(" + algorithm.Best.Fenotyp + ")=" + algorithm.Best.Function + "\n" +
-                " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.95)].Function + "\n" +
-                " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.9)].Function + "\n" +
-                " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.8)].Function + "\n";
+                " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].best.Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.95)].best.Function + "\n" +
+                " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].best.Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.9)].best.Function + "\n" +
+                " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].best.Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.8)].best.Function + "\n";
+    }
+    public void Save(string filename)
+    {
+        
+        using (var stream = File.AppendText(filename))
+        {
+            stream.WriteLine(   $"{algorithm.CurrentEpoch};{time.ElapsedMilliseconds};{algorithm.population.Length};{algorithm.Best.GetTypeOfOrganism()};{algorithm.StopConditionType};"+
+                            $"{algorithm.selectionTypeName};{algorithm.mutationPercentage};{algorithm.PopulationDeviation()};");
+            stream.WriteLine("n_epoch;phenotype;");
+            for (int i = 0; i < historyEpochs.Count; i++)
+            {
+                stream.WriteLine($"{i};{historyEpochs[i].best.Fenotyp};");
+            }
+        }
+
+
     }
 
 }
