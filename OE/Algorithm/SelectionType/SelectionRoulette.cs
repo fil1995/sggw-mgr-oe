@@ -12,7 +12,7 @@ class SelectionRoulette:SelectionType
         // obliczam funkcje dla całej populacji i wartości min
         for (int i = 0; i < populationFunctions.Length; i++)
         {
-            populationFunctions[i] = a.population[i].Function;
+            populationFunctions[i] = a.population[i].Fitness;
             if (populationFunctions[i] < populationFunctions[i_min]) i_min = i;
         }
 

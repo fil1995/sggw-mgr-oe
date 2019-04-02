@@ -38,7 +38,7 @@ class Test01
     {
         Algorithm a = new Algorithm(r,
                                                                 new StopNumEpochs(50),
-                                                                new SelectionRouletteRank(),
+                                                                new SelectionRouletteRank(), "dj38.tsp",
                                                                 10, 0.2, false, false
                                                                 );
         a.Run<Organism>();
@@ -60,16 +60,16 @@ class Test01
         {
             double tmpAvg = 0;
             double tmpAvgDeviation = 0;
-            double tmpMin = history[0].historyEpochs[epoch].best.Function;
-            double tmpMax = history[0].historyEpochs[epoch].best.Function;
+            double tmpMin = history[0].historyEpochs[epoch].best.Fitness;
+            double tmpMax = history[0].historyEpochs[epoch].best.Fitness;
             // dla każdego uruchomienia
             for (int run = 0; run < numRun; run++)
             {
                 // licze sume wynikow
-                tmpAvg += history[run].historyEpochs[epoch].best.Function;
+                tmpAvg += history[run].historyEpochs[epoch].best.Fitness;
                 tmpAvgDeviation += history[run].historyEpochs[epoch].populationDeviation;
-                if (tmpMin > history[run].historyEpochs[epoch].best.Function) tmpMin = history[run].historyEpochs[epoch].best.Function;
-                if (tmpMax < history[run].historyEpochs[epoch].best.Function) tmpMax = history[run].historyEpochs[epoch].best.Function;
+                if (tmpMin > history[run].historyEpochs[epoch].best.Fitness) tmpMin = history[run].historyEpochs[epoch].best.Fitness;
+                if (tmpMax < history[run].historyEpochs[epoch].best.Fitness) tmpMax = history[run].historyEpochs[epoch].best.Fitness;
             }
             epochsAvg[epoch] = tmpAvg / (double)numRun;
             epochsAvgDeviation[epoch] = tmpAvgDeviation / (double)numRun;

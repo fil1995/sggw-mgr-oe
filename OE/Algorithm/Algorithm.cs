@@ -18,8 +18,10 @@ class Algorithm
     public string selectionTypeName => selectionType.SelectionTypeName;
     public double mutationPercentage;
 
+    Cities TSPcities;
+
     public Algorithm(Random r, 
-        StopCondition stopCondition, SelectionType selectionType, 
+        StopCondition stopCondition, SelectionType selectionType, string tspFileName,
         int populationSize = 20, double mutationPercentage = 0.1, 
         bool verbose = true, bool verbose2 = false)
     {
@@ -36,6 +38,8 @@ class Algorithm
 
         this.selectionType = selectionType;
         selectionType.Initialize(this, r);
+
+        TSPcities = new Cities(tspFileName);
 
     }
     public void Run<TOrganism>(bool saveResults=false,string filename="") where TOrganism : Organism, new()
@@ -105,7 +109,7 @@ class Algorithm
         for (int i = 0; i < population.Length; i++)
         {
             //population[i] = CreateOrganism();
-            population[i] = f.CreateOrganism(r);
+            population[i] = f.CreateOrganism(r, TSPcities);
         }
         // aktualizacja najlepszego osobnika
         best = BestFromPopulation();
@@ -117,27 +121,6 @@ class Algorithm
         stats.AfterEpoch();
     }
 
-    public virtual Organism CreateOrganism()
-    {
-        return new Organism();
-    }
-    Organism SelectOrganism()
-    {
-        int losA = r.Next(0, population.Length);
-        int losB = r.Next(0, population.Length);
-        int i = 0;
-        while (losA == losB)
-        {
-            losB = r.Next(0, population.Length);
-            if (i == 5)
-            {
-                return population[losA];
-            }
-            i++;
-        }
-
-        return population[losA].Better(population[losB]);//  return Organism.Better(population[losA], population[losB]);
-    }
     Organism BestFromPopulation()
     {
         Organism best = population[0];
@@ -161,14 +144,14 @@ class Algorithm
         double average = 0;
         for (int i = 0; i < population.Length; i++)
         {
-            average += population[i].Fenotyp;
+            average += population[i].Fitness;
         }
         average /= population.Length;
 
         double sum = 0;
         for (int i = 0; i < population.Length; i++)
         {
-            sum += Math.Pow(population[i].Fenotyp - average, 2);
+            sum += Math.Pow(population[i].Fitness - average, 2);
         }
         return Math.Sqrt(sum / population.Length);
     }
@@ -181,7 +164,7 @@ class Algorithm
         string res = "Population values (" + currentEpoch + " epoch):\n";
         for (int i = 0; i < population.Length; i++)
         {
-            res += String.Format("{0:0.000}\t", population[i].Fenotyp);
+            res += String.Format("{0:0.000}\t", population[i].Phenotype);
             if (i == 9)
             {
                 res += "\n";
@@ -191,7 +174,7 @@ class Algorithm
         foreach (Organism o in population)
         {
         }
-        res += "\nBest:" + best.Fenotyp + "\n";
+        res += "\nBest:" + best.Phenotype + "\n";
         return res;
     }
 
@@ -199,11 +182,11 @@ class Algorithm
     {
         int i = left;
         int j = right;
-        double pivot = population[(left + right) / 2].Function;
+        double pivot = population[(left + right) / 2].Fitness;
         while (i < j)
         {
-            while (population[i].Function < pivot) i++;
-            while (population[j].Function > pivot) j--;
+            while (population[i].Fitness < pivot) i++;
+            while (population[j].Fitness > pivot) j--;
             if (i <= j)
             {
                 // zamiana

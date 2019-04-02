@@ -31,10 +31,10 @@ class Stats
     }
     public int NumEpochFromBest(double percentage)
     {
-        double betterThan = algorithm.Best.Function * percentage;
+        double betterThan = algorithm.Best.Fitness * percentage;
         for (int i = 0; i < historyEpochs.Count; i++)
         {
-            if (historyEpochs[i].best.Function >= betterThan)
+            if (historyEpochs[i].best.Fitness >= betterThan)
             {
                 return i;
             }
@@ -51,10 +51,10 @@ class Stats
                 " | Mutation:" + algorithm.mutationPercentage +
                 "\n-----------------\n" +
                 "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
-                "Best: f(" + algorithm.Best.Fenotyp + ")=" + algorithm.Best.Function + "\n" +
-                " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].best.Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.95)].best.Function + "\n" +
-                " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].best.Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.9)].best.Function + "\n" +
-                " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].best.Fenotyp + ")=" + historyEpochs[NumEpochFromBest(0.8)].best.Function + "\n";
+                "Best: f(" + algorithm.Best.Phenotype + ")=" + algorithm.Best.Fitness + "\n" +
+                " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.95)].best.Fitness + "\n" +
+                " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.9)].best.Fitness + "\n" +
+                " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.8)].best.Fitness + "\n";
     }
     public void Save(string filename)
     {
@@ -66,7 +66,7 @@ class Stats
             stream.WriteLine("n_epoch;phenotype;");
             for (int i = 0; i < historyEpochs.Count; i++)
             {
-                stream.WriteLine($"{i};{historyEpochs[i].best.Fenotyp};");
+                stream.WriteLine($"{i};{historyEpochs[i].best.Phenotype};");
             }
         }
 

@@ -2,10 +2,10 @@
 
 class OrganismFactory<TOrganism> where TOrganism : Organism, new()
 {
-    public TOrganism CreateOrganism(Random r)
+    public TOrganism CreateOrganism(Random r,Cities c)
     {
         TOrganism o = new TOrganism();
-        o.SetRandomGenotype(r);
+        o.SetRandomGenotype(r,c);
         return o;
     }
 }

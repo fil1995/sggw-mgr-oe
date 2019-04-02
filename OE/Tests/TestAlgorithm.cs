@@ -23,7 +23,7 @@ class TestAlgorithm<TOrganism> where TOrganism : Organism,new()
         {
             i++;
             a.Run<TOrganism>();
-            double aktualny = a.Result().Fenotyp;
+            double aktualny = a.Result().Fitness;
 
             wyniki.Add(aktualny);
 

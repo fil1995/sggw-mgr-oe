@@ -9,17 +9,18 @@ class Program
 
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
+        //Cities c = new Cities("dj38.tsp");
 
-        Test01 t = new Test01(random);
+        // Test01 t = new Test01(random);
 
 
 
-        //Algorithm a = new Algorithm(random,
-        //                                                        new StopNumEpochs(50),
-        //                                                        new SelectionTournament(),
-        //                                                        20, 0.2, true, false
-        //                                                        );
-        //a.Run<Organism>(true, "test.txt");
+        Algorithm a = new Algorithm(random,
+                                                                new StopNumEpochs(50),
+                                                                new SelectionTournament(), "dj38.tsp",
+                                                                20, 0.2, true, false
+                                                                );
+        a.Run<Organism>(true, "test.txt");
 
 
         //new TestAlgorithm<OrganismWithRepair>(
