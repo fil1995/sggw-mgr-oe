@@ -9,7 +9,7 @@ class Organism:IComparable<Organism>
 
     protected double? cacheFitness;
 
-    // fenotyp to reprezentacja normalna - sieżkowa 
+    // fenotyp to reprezentacja normalna - sieżkowa licze mista od 0
     public virtual uint[] Phenotype
     {
         get
@@ -19,7 +19,7 @@ class Organism:IComparable<Organism>
             List<uint> list = new List<uint>();
             for (uint i = 0; i < TSPcities.Length; i++)
             {
-                list.Add(i + 1);
+                list.Add(i);
             }
 
             for (int i = 0; i < phenotype.Length; i++)
@@ -29,7 +29,6 @@ class Organism:IComparable<Organism>
             }
 
             return phenotype;
-            // return -2 + (genotype * 4.0 / (double)uint.MaxValue);
         }
     }
     public virtual double Fitness
@@ -92,23 +91,25 @@ class Organism:IComparable<Organism>
     {
         return Recombination(this, b, r).Mutation(r,prawdopodobienstwo);
     }
-    public static Organism Better(Organism o1, Organism o2)
-    {
-        if (o1.Fitness > o2.Fitness)
-            return o1;
-        else
-            return o2;
-    }
+
     public Organism Better(Organism o2)
     {
-        if (this.Fitness > o2.Fitness)
+
+        // im mniejszy fitness tym lepiej - krótsza odległość
+        if (this.Fitness < o2.Fitness)
             return this;
         else
             return o2;
     }
     public override string ToString()
     {
-        return String.Format("f({0})={1}", Phenotype, Fitness);
+        string ret = "{";
+        foreach (uint item in Phenotype)
+        {
+            ret += $"{item + 1} ";
+        }
+        ret += "}";
+        return ret;
     }
     public virtual string GetTypeOfOrganism()
     {
@@ -124,6 +125,6 @@ class Organism:IComparable<Organism>
 
     public int CompareTo(Organism other)
     {
-        return this.Fitness.CompareTo(other.Fitness);
+        return this.Fitness.CompareTo(other.Fitness)*(-1);
     }
 }

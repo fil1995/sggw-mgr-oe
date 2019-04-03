@@ -16,11 +16,11 @@ class Program
 
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(50),
-                                                                new SelectionTournament(), "dj38.tsp",
-                                                                20, 0.2, true, false
+                                                                new StopNumEpochs(500),
+                                                                new SelectionTournament(), "uy734.tsp",
+                                                                200, 1, true, false
                                                                 );
-        a.Run<Organism>(true, "test.txt");
+        a.Run<Organism>(true, "test.txt");   //lu980
 
 
         //new TestAlgorithm<OrganismWithRepair>(

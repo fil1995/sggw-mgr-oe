@@ -28,8 +28,10 @@ class Cities
                 {
                     int index = line.IndexOf(':');
                     if (index > 0)
-                        citiesToLoad = Convert.ToUInt32( line.Substring(index + 1).Trim());
-                    cities = new City[citiesToLoad];
+                    {
+                        citiesToLoad = Convert.ToUInt32(line.Substring(index + 1).Trim());
+                        cities = new City[citiesToLoad];
+                    }
                 }
                 if (!startReadCoords &&  line.StartsWith("NODE_COORD"))
                 {
@@ -42,10 +44,17 @@ class Cities
                 if (startReadCoords && citiesToLoad>0)
                 {
                     string[] data = line.Split(' ');
-                    
-                    cities[i] = new City(int.Parse(data[0], CultureInfo.InvariantCulture),
+                    try
+                    {
+                        cities[i] = new City(int.Parse(data[0], CultureInfo.InvariantCulture),
                         double.Parse(data[1], CultureInfo.InvariantCulture),
                         double.Parse(data[2], CultureInfo.InvariantCulture));
+                    }catch(Exception e)
+                    {
+                        Console.WriteLine($"error: pozostało {citiesToLoad}   Błąd:"+line);
+                    }
+                    citiesToLoad--;
+                    i++;
                 }
   
             }
@@ -53,9 +62,17 @@ class Cities
         }
     }
 
-    // tu jako parametr dostaje fenotyp (liczmy od 1)
+    // tu jako parametr dostaje fenotyp (licze od 0)
     public double Distance(uint[] tour)
     {
-        return 0;
+        double sum = 0.0;
+        for (int i = 0; i < tour.Length-1; i++)
+        {
+            sum += City.Distance(cities[tour[i]], cities[tour[i+1]]);
+            //Console.WriteLine($"i={i} od {tour[i]}  do {tour[i+1]}  dist: {cities[tour[i]]} -> {cities[tour[i + 1]]}");
+        }
+        sum += City.Distance(cities[tour[tour.Length - 1]], cities[tour[0]]); // plus powrót 
+
+        return sum;
     }
 }

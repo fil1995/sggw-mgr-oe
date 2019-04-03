@@ -91,7 +91,7 @@ class Algorithm
         Organism selB = selectionType.Select(); // SelectOrganism();
 
 
-        Organism newOrganism = selA.RecombinationWithMutation(selB, r, 0.3);
+        Organism newOrganism = selA.RecombinationWithMutation(selB, r, mutationPercentage);
 
         // jeśli osobnik jest niepoprawny, to robimy od nowa rekombinacje max 5 razy
         int j = 0;

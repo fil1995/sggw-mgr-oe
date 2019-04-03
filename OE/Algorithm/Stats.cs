@@ -28,6 +28,7 @@ class Stats
     public void AfterEpoch()
     {
         historyEpochs.Add(new StatsEpoch(algorithm));
+        //Console.WriteLine("Epoch:"+algorithm.CurrentEpoch);
     }
     public int NumEpochFromBest(double percentage)
     {
@@ -44,7 +45,7 @@ class Stats
     }
     public override string ToString()
     {
-        return  "::Stats:: epochs:" + algorithm.CurrentEpoch + " Time: " + time.ElapsedMilliseconds + "milis\n" +
+        return  "::Stats:: epochs:" + algorithm.CurrentEpoch +" Population size: "+ algorithm.population.Length + " Time: " + time.ElapsedMilliseconds + "milis\n" +
                 "Organism Type:" + algorithm.Best.GetTypeOfOrganism() + 
                 " | Stop condition:" + algorithm.StopConditionType +
                 " | Selection Type:" + algorithm.selectionTypeName +
