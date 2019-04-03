@@ -28,7 +28,7 @@ class Stats
     public void AfterEpoch()
     {
         historyEpochs.Add(new StatsEpoch(algorithm));
-        //Console.WriteLine("Epoch:"+algorithm.CurrentEpoch);
+        if (algorithm.CurrentEpoch%100 ==0) Console.WriteLine("Epoch:"+algorithm.CurrentEpoch);
     }
     public int NumEpochFromBest(double percentage)
     {
@@ -43,19 +43,33 @@ class Stats
         return historyEpochs.Count-1;
 
     }
+    //public override string ToString()
+    //{
+    //    return  "::Stats:: epochs:" + algorithm.CurrentEpoch +" Population size: "+ algorithm.population.Length + " Time: " + time.ElapsedMilliseconds + "milis\n" +
+    //            "Organism Type:" + algorithm.Best.GetTypeOfOrganism() + 
+    //            " | Stop condition:" + algorithm.StopConditionType +
+    //            " | Selection Type:" + algorithm.selectionTypeName +
+    //            " | Mutation:" + algorithm.mutationPercentage +
+    //            "\n-----------------\n" +
+    //            "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
+    //            "Best: f(" + algorithm.Best.Phenotype + ")=" + algorithm.Best.Fitness + "\n" +
+    //            " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.95)].best.Fitness + "\n" +
+    //            " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.9)].best.Fitness + "\n" +
+    //            " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.8)].best.Fitness + "\n";
+    //}
     public override string ToString()
     {
-        return  "::Stats:: epochs:" + algorithm.CurrentEpoch +" Population size: "+ algorithm.population.Length + " Time: " + time.ElapsedMilliseconds + "milis\n" +
-                "Organism Type:" + algorithm.Best.GetTypeOfOrganism() + 
+        return "::Stats:: epochs:" + algorithm.CurrentEpoch + " Population size: " + algorithm.population.Length + " Time: " + time.ElapsedMilliseconds + "milis\n" +
+                "Organism Type:" + algorithm.Best.GetTypeOfOrganism() +
                 " | Stop condition:" + algorithm.StopConditionType +
                 " | Selection Type:" + algorithm.selectionTypeName +
                 " | Mutation:" + algorithm.mutationPercentage +
                 "\n-----------------\n" +
                 "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
-                "Best: f(" + algorithm.Best.Phenotype + ")=" + algorithm.Best.Fitness + "\n" +
-                " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.95)].best.Fitness + "\n" +
-                " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.9)].best.Fitness + "\n" +
-                " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.8)].best.Fitness + "\n";
+                "Best distance:" + algorithm.Best.Distance + "\n" +
+                " 95% on: " + NumEpochFromBest(0.95) + " Dst:" + historyEpochs[NumEpochFromBest(0.95)].best.Distance + "\n" +
+                " 90% on: " + NumEpochFromBest(0.9) + " Dst:" + historyEpochs[NumEpochFromBest(0.9)].best.Distance + "\n" +
+                " 80% on: " + NumEpochFromBest(0.8) + " Dst:" + historyEpochs[NumEpochFromBest(0.8)].best.Distance + "\n";
     }
     public void Save(string filename)
     {
@@ -64,10 +78,10 @@ class Stats
         {
             stream.WriteLine(   $"{algorithm.CurrentEpoch};{time.ElapsedMilliseconds};{algorithm.population.Length};{algorithm.Best.GetTypeOfOrganism()};{algorithm.StopConditionType};"+
                             $"{algorithm.selectionTypeName};{algorithm.mutationPercentage};{algorithm.PopulationDeviation()};");
-            stream.WriteLine("n_epoch;phenotype;");
+            stream.WriteLine("n_epoch;distance;PopulationDeviation;");
             for (int i = 0; i < historyEpochs.Count; i++)
             {
-                stream.WriteLine($"{i};{historyEpochs[i].best.Phenotype};");
+                stream.WriteLine($"{i};{historyEpochs[i].best.Distance};{historyEpochs[i].populationDeviation};");
             }
         }
 

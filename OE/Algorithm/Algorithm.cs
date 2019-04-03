@@ -70,10 +70,16 @@ class Algorithm
         // musze wygenerowac nową populacje
         Organism[] newPopulation = new Organism[population.Length];
 
-        for (int i = 0; i < population.Length; i++)
+        //for (int i = 0; i < population.Length; i++)
+        //{
+        //    newPopulation[i] = CreateChild();
+        //}
+
+        System.Threading.Tasks.Parallel.For(0, population.Length, i =>
         {
             newPopulation[i] = CreateChild();
-        }
+        });
+
         population = newPopulation;
 
         // sprawdzamy czy selekcja wymaga posortowanej populacji
@@ -177,27 +183,4 @@ class Algorithm
         res += "\nBest:" + best.Phenotype + "\n";
         return res;
     }
-
-    static void QuickSort(Organism[] population, int left, int right)
-    {
-        int i = left;
-        int j = right;
-        double pivot = population[(left + right) / 2].Fitness;
-        while (i < j)
-        {
-            while (population[i].Fitness < pivot) i++;
-            while (population[j].Fitness > pivot) j--;
-            if (i <= j)
-            {
-                // zamiana
-                Organism tmp = population[i];
-                population[i++] = population[j];
-                population[j--] = tmp;
-            }
-        }
-        if (left < j) QuickSort(population, left, j);
-        if (i < right) QuickSort(population, i, right);
-    }
-
-
 }

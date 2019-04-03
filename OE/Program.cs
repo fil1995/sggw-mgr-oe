@@ -13,15 +13,29 @@ class Program
 
         // Test01 t = new Test01(random);
 
-
+        //////////////////////    dj38    uy734        lu980     wi29
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(500),
-                                                                new SelectionTournament(), "uy734.tsp",
-                                                                200, 1, true, false
+                                                                new StopNumEpochs(5000),
+                                                                new SelectionTournament(), "wi29.tsp",
+                                                                500, 0.3, true, false
                                                                 );
         a.Run<Organism>(true, "test.txt");   //lu980
 
+
+        //Organism o1 = new Organism();
+        //o1.SetRandomGenotype(random, new Cities("wi29.tsp"));
+        //Console.WriteLine(o1);
+
+        //Organism o2 = new Organism();
+        //o2.SetRandomGenotype(random, new Cities("wi29.tsp"));
+        //Console.WriteLine(o2);
+
+        //Organism o3 = o1.RecombinationWithMutation(o2, random);
+        //Console.WriteLine(o3);
+
+        //Organism o4 = o1.Mutation(random,0.5);
+        //Console.WriteLine(o4);
 
         //new TestAlgorithm<OrganismWithRepair>(
         //                                        new Algorithm(random,

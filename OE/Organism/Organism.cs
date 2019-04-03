@@ -36,8 +36,15 @@ class Organism:IComparable<Organism>
         get
         {
             if (!cacheFitness.HasValue)
-                cacheFitness = TSPcities.Distance(Phenotype);
+                cacheFitness = 1/TSPcities.Distance(Phenotype);
             return cacheFitness.Value;
+        }
+    }
+    public virtual double Distance
+    {
+        get
+        {
+            return 1 / Fitness;
         }
     }
     public Organism()
@@ -61,12 +68,19 @@ class Organism:IComparable<Organism>
     static public Organism Recombination(Organism a, Organism b, Random r)
     {
         // losujemy punkt podziału
-        int cutPoint = r.Next(b.genotype.Length); // losuje taka, aby nie wziąć wszystkiego z jednego rodzica
+        int cutPoint1 = r.Next(b.genotype.Length); // losuje taka, aby nie wziąć wszystkiego z jednego rodzica
+        int cutPoint2 = r.Next(b.genotype.Length); // losuje taka, aby nie wziąć wszystkiego z jednego rodzica
+        if (cutPoint1>cutPoint2)
+        {
+            int tmp = cutPoint1;
+            cutPoint1 = cutPoint2;
+            cutPoint2 = tmp;
+        }
 
         Organism o = (Organism)a.MemberwiseClone();
 
         // musze wpisac część z b do genotypu
-        for (int i = cutPoint; i < b.genotype.Length; i++)
+        for (int i = cutPoint1; i <= cutPoint2; i++)
         {
             o.genotype[i] = b.genotype[i];
         }
@@ -77,13 +91,24 @@ class Organism:IComparable<Organism>
     public Organism Mutation(Random r, double prawdopodobienstwo = 0.1)
     {
         // mutujemy jeden bit
-        if (r.NextDouble() <= prawdopodobienstwo) // 10% wyników
+        //if (r.NextDouble() <= prawdopodobienstwo) // 10% wyników
+        //{
+        //    // na ktorej pozycji
+        //    int point = r.Next(genotype.Length);
+        //    // jaka wartosc
+        //    genotype[point] = (uint)r.Next(genotype.Length - point);
+        //}
+
+        // mutacja procentowa ilości bitów
+        for (int i = 0; i < genotype.Length * prawdopodobienstwo; i++)
         {
             // na ktorej pozycji
             int point = r.Next(genotype.Length);
             // jaka wartosc
-            genotype[point] = (uint)r.Next(genotype.Length-point);
+            genotype[point] = (uint)r.Next(genotype.Length - point);
+            // moze okazać się, że kilka razy zmutujemy na tej samej pozycji - do poprawy pozniej
         }
+
         this.cacheFitness = null; // aby od nowa policzyła sie funkcja, bo zmienił się genotyp
         return this;
     }
@@ -94,9 +119,7 @@ class Organism:IComparable<Organism>
 
     public Organism Better(Organism o2)
     {
-
-        // im mniejszy fitness tym lepiej - krótsza odległość
-        if (this.Fitness < o2.Fitness)
+        if (this.Fitness > o2.Fitness)
             return this;
         else
             return o2;
@@ -125,6 +148,6 @@ class Organism:IComparable<Organism>
 
     public int CompareTo(Organism other)
     {
-        return this.Fitness.CompareTo(other.Fitness)*(-1);
+        return this.Fitness.CompareTo(other.Fitness);
     }
 }
