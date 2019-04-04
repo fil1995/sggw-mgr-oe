@@ -4,15 +4,15 @@ class SelectionRoulette:SelectionType
 {
     public override bool NeedSortedPopulation => false;
 
-    public override Organism Select()
+    public override Organism Select(Random r, Organism[] population)
     {
-        double[] populationFunctions = new double[a.population.Length];
+        double[] populationFunctions = new double[population.Length];
         int i_min = 0;
         
         // obliczam funkcje dla całej populacji i wartości min
         for (int i = 0; i < populationFunctions.Length; i++)
         {
-            populationFunctions[i] = a.population[i].Fitness;
+            populationFunctions[i] = population[i].Fitness;
             if (populationFunctions[i] < populationFunctions[i_min]) i_min = i;
         }
 
@@ -43,7 +43,7 @@ class SelectionRoulette:SelectionType
         {
             currentSum += populationFunctions[i];
             if (currentSum >= rouletteVal)
-                return a.population[i];
+                return population[i];
         }
 
         throw new Exception("Roulette selection error");

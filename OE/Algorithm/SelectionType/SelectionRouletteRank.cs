@@ -5,18 +5,18 @@
 class SelectionRouletteRank:SelectionType
 {
     public override bool NeedSortedPopulation => true;
-    public override Organism Select()
+    public override Organism Select(Random r, Organism[] population)
     {
-        int maxVal= a.population.Length * (1+ a.population.Length) / 2; // suma ciągu arytmetycznego
+        int maxVal= population.Length * (1+ population.Length) / 2; // suma ciągu arytmetycznego
         int rouletteVal = r.Next(maxVal);
 
         /// losowanie
         double currentSum = 0;
-        for (int i = 0; i < a.population.Length; i++)
+        for (int i = 0; i < population.Length; i++)
         {
             currentSum += i + 1;
             if (currentSum >= rouletteVal)
-                return a.population[i];
+                return population[i];
         }
 
         throw new Exception("RouletteRank selection error");

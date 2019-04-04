@@ -3,21 +3,21 @@
 class SelectionTournament:SelectionType
 {
     public override bool NeedSortedPopulation => false;
-    public override Organism Select()
+    public override Organism Select(Random r, Organism[] population)
     {
-        int losA = r.Next(0, a.population.Length);
-        int losB = r.Next(0, a.population.Length);
+        int losA = r.Next(0, population.Length);
+        int losB = r.Next(0, population.Length);
         int i = 0;
         while (losA == losB)
         {
-            losB = r.Next(0, a.population.Length);
+            losB = r.Next(0, population.Length);
             if (i == 5)
             {
-                return a.population[losA];
+                return population[losA];
             }
             i++;
         }
 
-        return a.population[losA].Better(a.population[losB]);
+        return population[losA].Better(population[losB]);
     }
 }

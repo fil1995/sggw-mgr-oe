@@ -40,7 +40,6 @@ class Algorithm
         stopCondition.Initialize(this);
 
         this.selectionType = selectionType;
-        selectionType.Initialize(this, r);
 
         TSPcities = new Cities(tspFileName);
 
@@ -117,8 +116,8 @@ class Algorithm
     }
     Organism CreateChild(Random r)
     {
-        Organism selA = selectionType.Select(); // SelectOrganism();
-        Organism selB = selectionType.Select(); // SelectOrganism();
+        Organism selA = selectionType.Select(r,population); // SelectOrganism();
+        Organism selB = selectionType.Select(r,population); // SelectOrganism();
 
 
         // Organism newOrganism = selA.RecombinationWithMutation(selB, r, mutationPercentage);
