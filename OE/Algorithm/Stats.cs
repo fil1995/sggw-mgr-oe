@@ -59,7 +59,7 @@ class Stats
     //}
     public override string ToString()
     {
-        return "::Stats:: epochs:" + algorithm.CurrentEpoch + " Population size: " + algorithm.population.Length + " Time: " + time.Elapsed + "\n" +
+        return "::Stats:: epochs:" + algorithm.CurrentEpoch + " Population size: " + algorithm.population.Length + " Time: " + time.Elapsed +" file:"+algorithm.TSPcities.name +"\n" +
                 "Organism Type:" + algorithm.Best.GetTypeOfOrganism() +
                 " | Stop condition:" + algorithm.StopConditionType +
                 " | Selection Type:" + algorithm.selectionTypeName +

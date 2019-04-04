@@ -9,11 +9,13 @@ class Cities
 {
     City[] cities;
     public int Length => cities.Length;
+    public string name;
 
     double?[,] distanceCache;
 
     public Cities(string filename)
     {
+        name = filename;
         using (StreamReader reader = new StreamReader(filename))
         {
             uint citiesToLoad = 0;

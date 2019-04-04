@@ -16,11 +16,11 @@ class Program
         //////////////////////  wi29  27603. dj38 6656    uy734   79114     lu980     11340 
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(1000),
-                                                                new SelectionTournament(), "uy734.tsp",
-                                                                1000, 0.8, true, false
+                                                                new StopNumEpochs(30000),
+                                                                new SelectionTournament(), "wi29.tsp",
+                                                                100, 0.8, true, false
                                                                 );
-        a.Run(true, "test.txt");   //lu980
+        a.Run(false, "test.txt");
 
 
         //Organism o1 = new Organism();

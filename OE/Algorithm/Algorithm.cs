@@ -21,7 +21,7 @@ class Algorithm
     public string selectionTypeName => selectionType.SelectionTypeName;
     public double mutationPercentage;
 
-    Cities TSPcities;
+    public Cities TSPcities;
 
     public Algorithm(Random r,
         StopCondition stopCondition, SelectionType selectionType, string tspFileName,
