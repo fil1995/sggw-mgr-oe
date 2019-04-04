@@ -13,14 +13,14 @@ class Program
 
         // Test01 t = new Test01(random);
 
-        //////////////////////    dj38    uy734        lu980     wi29
+        //////////////////////  wi29  27603. dj38 6656    uy734   79114     lu980     11340 
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(5000),
-                                                                new SelectionTournament(), "wi29.tsp",
-                                                                500, 0.3, true, false
+                                                                new StopNumEpochs(100),
+                                                                new SelectionTournament(), "uy734.tsp",
+                                                                200, 0.5, true, false
                                                                 );
-        a.Run<Organism>(true, "test.txt");   //lu980
+        a.Run(true, "test.txt");   //lu980
 
 
         //Organism o1 = new Organism();
@@ -45,7 +45,7 @@ class Program
         //                                                        )
         //                                        );
 
-        Console.ReadKey();
+        //Console.ReadKey();
     }
 }
 

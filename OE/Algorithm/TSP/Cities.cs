@@ -68,11 +68,18 @@ class Cities
         double sum = 0.0;
         for (int i = 0; i < tour.Length-1; i++)
         {
-            sum += City.Distance(cities[tour[i]], cities[tour[i+1]]);
+            sum += Distance(tour[i], tour[i + 1]);
+            //sum += City.Distance(cities[tour[i]], cities[tour[i + 1]]);
             //Console.WriteLine($"i={i} od {tour[i]}  do {tour[i+1]}  dist: {cities[tour[i]]} -> {cities[tour[i + 1]]}");
         }
-        sum += City.Distance(cities[tour[tour.Length - 1]], cities[tour[0]]); // plus powrót 
+        //sum += City.Distance(cities[tour[tour.Length - 1]], cities[tour[0]]); // plus powrót 
+        sum += Distance(tour[tour.Length - 1], tour[0]); // plus powrót 
 
         return sum;
+    }
+    // odległość po ID, z cache
+    double Distance(uint a, uint b)
+    {
+        return City.Distance(cities[a], cities[b]);
     }
 }

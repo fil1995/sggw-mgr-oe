@@ -41,7 +41,7 @@ class Test01
                                                                 new SelectionRouletteRank(), "dj38.tsp",
                                                                 10, 0.2, false, false
                                                                 );
-        a.Run<Organism>();
+        a.Run();
         return a.stats;
     }
 

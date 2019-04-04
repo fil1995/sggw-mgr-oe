@@ -42,9 +42,9 @@ class Algorithm
         TSPcities = new Cities(tspFileName);
 
     }
-    public void Run<TOrganism>(bool saveResults=false,string filename="") where TOrganism : Organism, new()
+    public void Run(bool saveResults=false,string filename="")
     {
-        GeneratePopulation<TOrganism>();
+        GeneratePopulation();
         Run();
         if (saveResults) stats.Save(filename);
     }
@@ -70,15 +70,15 @@ class Algorithm
         // musze wygenerowac nową populacje
         Organism[] newPopulation = new Organism[population.Length];
 
-        //for (int i = 0; i < population.Length; i++)
-        //{
-        //    newPopulation[i] = CreateChild();
-        //}
-
-        System.Threading.Tasks.Parallel.For(0, population.Length, i =>
+        for (int i = 0; i < population.Length; i++)
         {
             newPopulation[i] = CreateChild();
-        });
+        }
+
+        //System.Threading.Tasks.Parallel.For(0, population.Length, i =>
+        //{
+        //    newPopulation[i] = CreateChild();
+        //});
 
         population = newPopulation;
 
@@ -97,25 +97,19 @@ class Algorithm
         Organism selB = selectionType.Select(); // SelectOrganism();
 
 
-        Organism newOrganism = selA.RecombinationWithMutation(selB, r, mutationPercentage);
+        // Organism newOrganism = selA.RecombinationWithMutation(selB, r, mutationPercentage);
 
-        // jeśli osobnik jest niepoprawny, to robimy od nowa rekombinacje max 5 razy
-        int j = 0;
-        while (!newOrganism.IsVaild && j < 5)
-        {
-            newOrganism = selA.RecombinationWithMutation(selB, r);
-            j++;
-        }
-        return newOrganism;
+        //return newOrganism;
+        return Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
     }
 
-    public void GeneratePopulation<TOrganism>() where TOrganism : Organism, new()
+    public void GeneratePopulation()
     {
-        OrganismFactory<TOrganism> f = new OrganismFactory<TOrganism>();
+        //OrganismFactory<TOrganism> f = new OrganismFactory<TOrganism>();
         for (int i = 0; i < population.Length; i++)
         {
-            //population[i] = CreateOrganism();
-            population[i] = f.CreateOrganism(r, TSPcities);
+            population[i] = new Organism(TSPcities,r);
+            //population[i] = f.CreateOrganism(r, TSPcities);
         }
         // aktualizacja najlepszego osobnika
         best = BestFromPopulation();
@@ -150,14 +144,14 @@ class Algorithm
         double average = 0;
         for (int i = 0; i < population.Length; i++)
         {
-            average += population[i].Fitness;
+            average += population[i].Distance;
         }
         average /= population.Length;
 
         double sum = 0;
         for (int i = 0; i < population.Length; i++)
         {
-            sum += Math.Pow(population[i].Fitness - average, 2);
+            sum += Math.Pow(population[i].Distance - average, 2);
         }
         return Math.Sqrt(sum / population.Length);
     }
@@ -170,17 +164,14 @@ class Algorithm
         string res = "Population values (" + currentEpoch + " epoch):\n";
         for (int i = 0; i < population.Length; i++)
         {
-            res += String.Format("{0:0.000}\t", population[i].Phenotype);
+            res += String.Format("{0:0.000} ", population[i].Distance);
             if (i == 9)
             {
                 res += "\n";
             }
 
         }
-        foreach (Organism o in population)
-        {
-        }
-        res += "\nBest:" + best.Phenotype + "\n";
+        res += "\nBest:" + best.Distance + "\n";
         return res;
     }
 }

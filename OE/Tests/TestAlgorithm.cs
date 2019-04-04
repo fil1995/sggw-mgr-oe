@@ -22,7 +22,7 @@ class TestAlgorithm<TOrganism> where TOrganism : Organism,new()
         while (minIloscUruchomien > 0 || maxIloscUruchomien > 0 || aktDokladnosc > dokladnosc)
         {
             i++;
-            a.Run<TOrganism>();
+            a.Run();
             double aktualny = a.Result().Fitness;
 
             wyniki.Add(aktualny);
