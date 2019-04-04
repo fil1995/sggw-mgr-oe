@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 class Algorithm
 {
+    private readonly object globalLock = new object();
+
     bool verbose;
     bool verbose2;
     public Organism[] population;
@@ -20,9 +23,9 @@ class Algorithm
 
     Cities TSPcities;
 
-    public Algorithm(Random r, 
+    public Algorithm(Random r,
         StopCondition stopCondition, SelectionType selectionType, string tspFileName,
-        int populationSize = 20, double mutationPercentage = 0.1, 
+        int populationSize = 20, double mutationPercentage = 0.1,
         bool verbose = true, bool verbose2 = false)
     {
         this.r = r;
@@ -42,7 +45,7 @@ class Algorithm
         TSPcities = new Cities(tspFileName);
 
     }
-    public void Run(bool saveResults=false,string filename="")
+    public void Run(bool saveResults = false, string filename = "")
     {
         GeneratePopulation();
         Run();
@@ -70,15 +73,36 @@ class Algorithm
         // musze wygenerowac nową populacje
         Organism[] newPopulation = new Organism[population.Length];
 
-        for (int i = 0; i < population.Length; i++)
-        {
-            newPopulation[i] = CreateChild();
-        }
+        //for (int i = 0; i < population.Length; i++)
+        //{
+        //    newPopulation[i] = CreateChild();
+        //}
 
         //System.Threading.Tasks.Parallel.For(0, population.Length, i =>
         //{
         //    newPopulation[i] = CreateChild();
         //});
+
+
+        /////////////////////////////////////////////
+        ParallelOptions po = new ParallelOptions();
+        po.MaxDegreeOfParallelism = 4;
+
+        Parallel.For<Random>(0, population.Length, po,
+            () => { lock (globalLock) { return new Random(r.Next()); } },
+            (i, loop, local) =>
+            {
+                newPopulation[i] = CreateChild(local);
+                return local;
+            },
+                (x) => { }
+        );
+
+        /////////////////////////////////////////////
+
+
+
+
 
         population = newPopulation;
 
@@ -91,7 +115,7 @@ class Algorithm
         UpdateBest();
         stats.AfterEpoch();
     }
-    Organism CreateChild()
+    Organism CreateChild(Random r)
     {
         Organism selA = selectionType.Select(); // SelectOrganism();
         Organism selB = selectionType.Select(); // SelectOrganism();
@@ -100,7 +124,12 @@ class Algorithm
         // Organism newOrganism = selA.RecombinationWithMutation(selB, r, mutationPercentage);
 
         //return newOrganism;
-        return Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
+
+        Organism newOrganism = Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
+
+        double tylkopolicz = newOrganism.Fitness;
+
+        return newOrganism;
     }
 
     public void GeneratePopulation()
@@ -108,7 +137,7 @@ class Algorithm
         //OrganismFactory<TOrganism> f = new OrganismFactory<TOrganism>();
         for (int i = 0; i < population.Length; i++)
         {
-            population[i] = new Organism(TSPcities,r);
+            population[i] = new Organism(TSPcities, r);
             //population[i] = f.CreateOrganism(r, TSPcities);
         }
         // aktualizacja najlepszego osobnika

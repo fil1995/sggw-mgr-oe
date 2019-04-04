@@ -10,6 +10,7 @@ class Cities
     City[] cities;
     public int Length => cities.Length;
 
+    double?[,] distanceCache;
 
     public Cities(string filename)
     {
@@ -33,7 +34,7 @@ class Cities
                         cities = new City[citiesToLoad];
                     }
                 }
-                if (!startReadCoords &&  line.StartsWith("NODE_COORD"))
+                if (!startReadCoords && line.StartsWith("NODE_COORD"))
                 {
                     startReadCoords = true;
                     Console.WriteLine($"Start reading tsp file... {citiesToLoad} cities");
@@ -41,7 +42,7 @@ class Cities
                 }
 
                 // teraz czytam miasta
-                if (startReadCoords && citiesToLoad>0)
+                if (startReadCoords && citiesToLoad > 0)
                 {
                     string[] data = line.Split(' ');
                     try
@@ -49,24 +50,26 @@ class Cities
                         cities[i] = new City(int.Parse(data[0], CultureInfo.InvariantCulture),
                         double.Parse(data[1], CultureInfo.InvariantCulture),
                         double.Parse(data[2], CultureInfo.InvariantCulture));
-                    }catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
-                        Console.WriteLine($"error: pozostało {citiesToLoad}   Błąd:"+line);
+                        Console.WriteLine($"error: pozostało {citiesToLoad}   Błąd:" + line);
                     }
                     citiesToLoad--;
                     i++;
                 }
-  
+
             }
             reader.Close();
         }
+        distanceCache = new double?[Length, Length];
     }
 
     // tu jako parametr dostaje fenotyp (licze od 0)
     public double Distance(uint[] tour)
     {
         double sum = 0.0;
-        for (int i = 0; i < tour.Length-1; i++)
+        for (int i = 0; i < tour.Length - 1; i++)
         {
             sum += Distance(tour[i], tour[i + 1]);
             //sum += City.Distance(cities[tour[i]], cities[tour[i + 1]]);
@@ -80,6 +83,12 @@ class Cities
     // odległość po ID, z cache
     double Distance(uint a, uint b)
     {
-        return City.Distance(cities[a], cities[b]);
+        //return City.Distance(cities[a], cities[b]);
+        if (!distanceCache[a,b].HasValue)
+        {
+            distanceCache[a, b] =  City.Distance(cities[a], cities[b]);
+        }
+
+        return distanceCache[a, b].Value;
     }
 }
