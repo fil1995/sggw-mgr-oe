@@ -13,12 +13,12 @@ class Program
 
         // Test01 t = new Test01(random);
 
-        //////////////////////  wi29  27603. dj38 6656    uy734   79114     lu980     11340 
+        //////////////////////  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(30000),
-                                                                new SelectionTournament(), "wi29.tsp",
-                                                                100, 0.8, true, false
+                                                                new StopNumEpochs(100),
+                                                                new SelectionTournament(), "uy734.tsp",
+                                                                1000, 0.5, true, false
                                                                 );
         a.Run(false, "test.txt");
 
@@ -45,7 +45,7 @@ class Program
         //                                                        )
         //                                        );
 
-        Console.ReadKey();
+        //Console.ReadKey();
     }
 }
 

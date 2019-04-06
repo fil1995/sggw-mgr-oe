@@ -85,7 +85,7 @@ class Algorithm
 
         /////////////////////////////////////////////
         ParallelOptions po = new ParallelOptions();
-        po.MaxDegreeOfParallelism = 4;
+        //po.MaxDegreeOfParallelism = 4;
 
         Parallel.For<Random>(0, population.Length, po,
             () => { lock (globalLock) { return new Random(r.Next()); } },
@@ -116,8 +116,8 @@ class Algorithm
     }
     Organism CreateChild(Random r)
     {
-        Organism selA = selectionType.Select(r,population); // SelectOrganism();
-        Organism selB = selectionType.Select(r,population); // SelectOrganism();
+        Organism selA = selectionType.Select(r, population); // SelectOrganism();
+        Organism selB = selectionType.Select(r, population); // SelectOrganism();
 
 
         // Organism newOrganism = selA.RecombinationWithMutation(selB, r, mutationPercentage);
@@ -125,8 +125,9 @@ class Algorithm
         //return newOrganism;
 
         Organism newOrganism = Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
-
-        double tylkopolicz = newOrganism.Fitness;
+        
+        // i tak aby znaleźć najelpszego musimy znać fitnessy każego
+        double calculateOnly = newOrganism.Fitness;
 
         return newOrganism;
     }

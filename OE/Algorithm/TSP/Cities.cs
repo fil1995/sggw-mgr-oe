@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
 
 
 class Cities
 {
+    bool useDistanceCache = true;
     City[] cities;
     public int Length => cities.Length;
     public string name;
@@ -64,7 +63,8 @@ class Cities
             }
             reader.Close();
         }
-        distanceCache = new double?[Length, Length];
+        if (Length > 1000) { useDistanceCache = false; Console.WriteLine("Disable distance cache - too many cities."); }
+        if (useDistanceCache) distanceCache = new double?[Length, Length];
     }
 
     // tu jako parametr dostaje fenotyp (licze od 0)
@@ -85,7 +85,8 @@ class Cities
     // odległość po ID, z cache
     double Distance(uint a, uint b)
     {
-        //return City.Distance(cities[a], cities[b]);
+        if(!useDistanceCache) return City.Distance(cities[a], cities[b]);
+
         if (!distanceCache[a,b].HasValue)
         {
             distanceCache[a, b] =  City.Distance(cities[a], cities[b]);
