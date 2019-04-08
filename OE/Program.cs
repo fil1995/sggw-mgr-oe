@@ -16,8 +16,8 @@ class Program
         //////////////////////  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(100),
-                                                                new SelectionTournament(), "uy734.tsp",
+                                                                new StopNumEpochs(10000),
+                                                                new SelectionRouletteRank(), "dj38.tsp",
                                                                 1000, 0.5, true, false
                                                                 );
         a.Run(false, "test.txt");
@@ -45,7 +45,7 @@ class Program
         //                                                        )
         //                                        );
 
-        //Console.ReadKey();
+        Console.ReadKey();
     }
 }
 

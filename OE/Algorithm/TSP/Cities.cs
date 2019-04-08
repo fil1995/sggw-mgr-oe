@@ -87,6 +87,14 @@ class Cities
     {
         if(!useDistanceCache) return City.Distance(cities[a], cities[b]);
 
+        // tu jeszcze skrócenie o połowe...  w najlepszym przypadku
+        if (a > b)
+        {
+            uint tmp = a;
+            a = b;
+            b = tmp;
+        }
+
         if (!distanceCache[a,b].HasValue)
         {
             distanceCache[a, b] =  City.Distance(cities[a], cities[b]);
