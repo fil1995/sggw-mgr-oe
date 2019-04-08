@@ -9,18 +9,33 @@ class Program
 
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
-        //Cities c = new Cities("dj38.tsp");
+        Cities c = new Cities("fm9.tsp");
+        Organism o = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
+        o.SetRandomGenotype(random);
+        Console.WriteLine(o);
+
+        o.ConvertToAdjecency();
+        Console.WriteLine(o);
+
+        o.ConvertToOrdinal();
+        Console.WriteLine(o);
+
+        o.ConvertToPath();
+        Console.WriteLine(o);
 
         // Test01 t = new Test01(random);
 
         //////////////////////  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
-        Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(10000),
-                                                                new SelectionRouletteRank(), "dj38.tsp",
-                                                                1000, 0.5, true, false
-                                                                );
-        a.Run(false, "test.txt");
+        //Algorithm a = new Algorithm(random,
+        //                                                        new StopNumEpochs(10000),
+        //                                                        new SelectionRouletteRank(),
+        //                                                        new CrossoverOrdinalSinglePoint(),
+        //                                                        new MutationOridinalOnePoint(0.5), 
+        //                                                        "dj38.tsp",
+        //                                                        1000, true, false
+        //                                                        );
+        //a.Run(false, "test.txt");
 
 
         //Organism o1 = new Organism();

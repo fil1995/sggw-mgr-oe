@@ -38,8 +38,11 @@ class Test01
     {
         Algorithm a = new Algorithm(r,
                                                                 new StopNumEpochs(50),
-                                                                new SelectionRouletteRank(), "dj38.tsp",
-                                                                10, 0.2, false, false
+                                                                new SelectionRouletteRank(), 
+                                                                new CrossoverOrdinalSinglePoint(),
+                                                                new MutationOridinalOnePoint(0.2),
+                                                                "dj38.tsp",
+                                                                10,  false, false
                                                                 );
         a.Run();
         return a.stats;

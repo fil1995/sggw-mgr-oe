@@ -19,18 +19,19 @@ class Algorithm
     public string StopConditionType => stopCondition.StopType;
     protected SelectionType selectionType;
     public string selectionTypeName => selectionType.SelectionTypeName;
-    public double mutationPercentage;
 
     public Cities TSPcities;
 
+    public Crossover crossover;
+    public Mutation mutation;
+
     public Algorithm(Random r,
-        StopCondition stopCondition, SelectionType selectionType, string tspFileName,
-        int populationSize = 20, double mutationPercentage = 0.1,
+        StopCondition stopCondition, SelectionType selectionType, Crossover crossover,Mutation mutation,string tspFileName,
+        int populationSize = 20,
         bool verbose = true, bool verbose2 = false)
     {
         this.r = r;
         population = new Organism[populationSize];
-        this.mutationPercentage = mutationPercentage;
         this.verbose = verbose;
         this.verbose2 = verbose2;
         currentEpoch = 0;
@@ -40,6 +41,8 @@ class Algorithm
         stopCondition.Initialize(this);
 
         this.selectionType = selectionType;
+        this.crossover = crossover;
+        this.mutation = mutation;
 
         TSPcities = new Cities(tspFileName);
 
@@ -124,8 +127,11 @@ class Algorithm
 
         //return newOrganism;
 
-        Organism newOrganism = Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
-        
+        // Organism newOrganism = Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
+        Organism newOrganism = crossover.Cross(selA,selB,r);
+
+        mutation.Mutate(newOrganism, r);
+
         // i tak aby znaleźć najelpszego musimy znać fitnessy każego
         double calculateOnly = newOrganism.Fitness;
 
@@ -137,7 +143,7 @@ class Algorithm
         //OrganismFactory<TOrganism> f = new OrganismFactory<TOrganism>();
         for (int i = 0; i < population.Length; i++)
         {
-            population[i] = new Organism(TSPcities, r);
+            population[i] = new Organism(TSPcities,crossover.genotypeRepresentation,r);
             //population[i] = f.CreateOrganism(r, TSPcities);
         }
         // aktualizacja najlepszego osobnika

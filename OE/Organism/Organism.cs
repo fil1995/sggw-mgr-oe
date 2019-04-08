@@ -3,42 +3,54 @@ using System.Collections.Generic;
 
 class Organism:IComparable<Organism>
 {
-    // w genotypie mam reprezentacje porządkową, liczę od 0
-    protected uint[] genotype;
-    protected Cities TSPcities;
+    public uint[] genotype;
+    public GenotypeRepresentation genotypeRepresentation { get; set; }
 
-    protected double? cacheFitness;
+    public Cities TSPcities;
+
     protected double? cacheDistance;
 
-    // fenotyp to reprezentacja normalna - sieżkowa licze mista od 0
-    public virtual uint[] Phenotype
+    public Organism(Cities c, GenotypeRepresentation gr)
+    {
+        TSPcities = c;
+        genotype = new uint[TSPcities.Length];
+        genotypeRepresentation = gr;
+        cacheDistance = null;
+    }
+    public Organism(Cities c, GenotypeRepresentation gr, Random r)
+    {
+        TSPcities = c;
+        genotype = new uint[TSPcities.Length];
+        genotypeRepresentation = gr;
+        SetRandomGenotype(r);
+        cacheDistance = null;
+    }
+
+
+    public uint[] Phenotype
     {
         get
         {
-            uint[] phenotype = new uint[genotype.Length];
-
-            List<uint> list = new List<uint>();
-            for (uint i = 0; i < TSPcities.Length; i++)
+            switch (genotypeRepresentation)
             {
-                list.Add(i);
+                case GenotypeRepresentation.PATH:
+                    return genotype;
+                case GenotypeRepresentation.ORDINAL:
+                    return OrdinalToPath(genotype);
+                case GenotypeRepresentation.ADJACENCYLIST:
+                    return AdjecencyListToPath(genotype);
+                default:
+                    throw new NotImplementedException("Genotype representation error");
             }
 
-            for (int i = 0; i < phenotype.Length; i++)
-            {
-                phenotype[i] = list[(int)genotype[i]];
-                list.RemoveAt((int)genotype[i]);
-            }
-
-            return phenotype;
         }
     }
+
     public virtual double Fitness
     {
         get
         {
-            if (!cacheFitness.HasValue)
-                cacheFitness = 1/Distance;
-            return cacheFitness.Value;
+            return 1 / Distance;
         }
     }
     public virtual double Distance
@@ -46,92 +58,160 @@ class Organism:IComparable<Organism>
         get
         {
             if (!cacheDistance.HasValue)
-                cacheDistance= TSPcities.Distance(Phenotype);
+                cacheDistance = TSPcities.Distance(Phenotype);
             return cacheDistance.Value;
         }
     }
-    public Organism(Cities c)
+
+
+    private uint[] OrdinalToPath(uint[] ordinal)
     {
-        TSPcities = c;
-        genotype = new uint[TSPcities.Length];
+        uint[] ret = new uint[ordinal.Length];
+
+        List<uint> list = new List<uint>();
+        for (uint i = 0; i < ordinal.Length; i++)
+        {
+            list.Add(i);
+        }
+
+        for (int i = 0; i < ret.Length; i++)
+        {
+            ret[i] = list[(int)ordinal[i]];
+            list.RemoveAt((int)ordinal[i]);
+        }
+        return ret;
     }
-    public Organism(Cities c, Random r)
+    private uint[] PathToOrdinal(uint[] path)
     {
-        TSPcities = c;
-        genotype = new uint[TSPcities.Length];
-        SetRandomGenotype(r);
+        uint[] ret = new uint[path.Length];
+
+        List<uint> list = new List<uint>();
+        for (uint i = 0; i < path.Length; i++)
+        {
+            list.Add(i);
+        }
+
+        for (int i = 0; i < path.Length; i++)
+        {
+            ret[i] = (uint)list.IndexOf(path[i]);
+            list.RemoveAt((int)ret[i]);
+        }
+
+        return ret;
+    }
+    private uint[] AdjecencyListToPath(uint[] adjecencyList)
+    {
+        uint[] ret = new uint[adjecencyList.Length];
+
+        ret[0] = 0;
+        for (int i = 1; i < adjecencyList.Length; i++)
+        {
+            ret[i] = adjecencyList[ret[i-1]];
+        }
+
+        return ret;
+    }
+    // wszędzie liczę miasta od 0
+    private uint[] PathToAdjecencyList(uint[] path)
+    {
+        uint[] ret = new uint[path.Length];
+
+        for (int i = 0; i < path.Length-1; i++)
+        {
+            uint from = path[i];
+            uint to = path[i+1];
+            ret[from] = to;
+        }
+        // na końcu dodaję pętle
+        ret[path[path.Length - 1]] = path[0];
+
+        return ret;
     }
 
-    public virtual void SetRandomGenotype(Random r)
+    public void SetRandomGenotype(Random r)
     {
         // losowe ustawienie
-        for (uint i = 0; i < genotype.Length; i++)
+        for (int i = 0; i < genotype.Length; i++)
         {
             genotype[i] = (uint)r.Next(genotype.Length - (int)i);
         }
 
-        cacheFitness = null;
+        switch (genotypeRepresentation)
+        {
+            case GenotypeRepresentation.PATH:
+                genotype = OrdinalToPath(genotype);
+                break;
+            case GenotypeRepresentation.ORDINAL:
+                // to jest ok
+                break;
+            case GenotypeRepresentation.ADJACENCYLIST:
+                genotype =PathToAdjecencyList(OrdinalToPath(genotype));
+                break;
+            default:
+                break;
+        }
+
         cacheDistance = null;
     }
-
-    static public Organism Recombination(Organism a, Organism b, Random r)
+    public void ConvertToOrdinal()
     {
-        // losujemy punkt podziału
-        int cutPoint1 = r.Next(b.genotype.Length);
-        int cutPoint2 = r.Next(b.genotype.Length);
-        if (cutPoint1>cutPoint2)
+        switch (genotypeRepresentation)
         {
-            int tmp = cutPoint1;
-            cutPoint1 = cutPoint2;
-            cutPoint2 = tmp;
+            case GenotypeRepresentation.PATH:
+                genotype = PathToOrdinal(genotype);
+                genotypeRepresentation = GenotypeRepresentation.ORDINAL;
+                break;
+            case GenotypeRepresentation.ORDINAL:
+                // to jest ok
+                break;
+            case GenotypeRepresentation.ADJACENCYLIST:
+                genotype = PathToOrdinal(AdjecencyListToPath(genotype));
+                genotypeRepresentation = GenotypeRepresentation.ORDINAL;
+                break;
+            default:
+                break;
         }
-
-        // Organism o = (Organism)a.MemberwiseClone();
-        Organism o = new Organism(a.TSPcities);
-
-        // dwa pkt podziału
-        for (int i = 0; i < a.genotype.Length; i++)
-        {
-            if (i>cutPoint1 && i< cutPoint2)
-                o.genotype[i] = a.genotype[i];
-            else
-                o.genotype[i] = b.genotype[i];
-        }
-
-        o.cacheFitness = null; // aby od nowa policzyła sie funkcja, bo zmienił się genotyp
-        o.cacheDistance = null;
-        return o; //return new Organism((a.genotype & mask) | (b.genotype & ~mask));
     }
-    public Organism Mutation(Random r, double prawdopodobienstwo = 0.1)
+    public void ConvertToPath()
     {
-        // mutujemy jeden bit
-        if (r.NextDouble() <= prawdopodobienstwo) // 10% wyników
+        switch (genotypeRepresentation)
         {
-            // na ktorej pozycji
-            int point = r.Next(genotype.Length);
-            // jaka wartosc
-            genotype[point] = (uint)r.Next(genotype.Length - point);
+            case GenotypeRepresentation.PATH:
+                // to jest ok
+                break;
+            case GenotypeRepresentation.ORDINAL:
+                genotype = OrdinalToPath(genotype);
+                genotypeRepresentation = GenotypeRepresentation.PATH;
+                // to jest ok
+                break;
+            case GenotypeRepresentation.ADJACENCYLIST:
+                genotype = AdjecencyListToPath(genotype);
+                genotypeRepresentation = GenotypeRepresentation.PATH;
+                break;
+            default:
+                break;
         }
-
-        // mutacja procentowa ilości bitów
-        //for (int i = 0; i < genotype.Length * prawdopodobienstwo; i++)
-        //{
-        //    // na ktorej pozycji
-        //    int point = r.Next(genotype.Length);
-        //    // jaka wartosc
-        //    genotype[point] = (uint)r.Next(genotype.Length - point);
-        //    // moze okazać się, że kilka razy zmutujemy na tej samej pozycji - do poprawy pozniej
-        //}
-
-        this.cacheFitness = null; // aby od nowa policzyła sie funkcja, bo zmienił się genotyp
-        this.cacheDistance = null; // aby od nowa policzyła sie funkcja, bo zmienił się genotyp
-        return this;
     }
-    //public virtual Organism RecombinationWithMutation(Organism b, Random r, double prawdopodobienstwo = 0.1)
-    //{
-    //    return Recombination(this, b, r).Mutation(r,prawdopodobienstwo);
-    //}
-
+    public void ConvertToAdjecency()
+    {
+        switch (genotypeRepresentation)
+        {
+            case GenotypeRepresentation.PATH:
+                genotype = PathToAdjecencyList(genotype);
+                genotypeRepresentation = GenotypeRepresentation.ADJACENCYLIST;
+                break;
+            case GenotypeRepresentation.ORDINAL:
+                genotype =PathToAdjecencyList( OrdinalToPath(genotype));
+                genotypeRepresentation = GenotypeRepresentation.ADJACENCYLIST;
+                // to jest ok
+                break;
+            case GenotypeRepresentation.ADJACENCYLIST:
+                // to jest ok
+                break;
+            default:
+                break;
+        }
+    }
     public Organism Better(Organism o2)
     {
         if (this.Fitness > o2.Fitness)

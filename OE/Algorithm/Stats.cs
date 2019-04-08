@@ -63,7 +63,7 @@ class Stats
                 "Organism Type:" + algorithm.Best.GetTypeOfOrganism() +
                 " | Stop condition:" + algorithm.StopConditionType +
                 " | Selection Type:" + algorithm.selectionTypeName +
-                " | Mutation:" + algorithm.mutationPercentage +
+                " | Mutation:" + algorithm.mutation.mutationPercentage +
                 "\n-----------------\n" +
                 "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
                 "Best distance:" + algorithm.Best.Distance + "\n" +
@@ -77,7 +77,7 @@ class Stats
         using (var stream = File.AppendText(filename))
         {
             stream.WriteLine(   $"{algorithm.CurrentEpoch};{time.ElapsedMilliseconds};{algorithm.population.Length};{algorithm.Best.GetTypeOfOrganism()};{algorithm.StopConditionType};"+
-                            $"{algorithm.selectionTypeName};{algorithm.mutationPercentage};{algorithm.PopulationDeviation()};");
+                            $"{algorithm.selectionTypeName};{algorithm.mutation.mutationPercentage};{algorithm.PopulationDeviation()};");
             stream.WriteLine("n_epoch;distance;PopulationDeviation;");
             for (int i = 0; i < historyEpochs.Count; i++)
             {
