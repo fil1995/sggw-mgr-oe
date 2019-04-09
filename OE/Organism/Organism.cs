@@ -224,7 +224,7 @@ class Organism:IComparable<Organism>
         string ret = "{";
         foreach (uint item in Phenotype)
         {
-            ret += $"{item} ";
+            ret += String.Format("{0,2} ", item);
         }
         ret += "}";
         return ret;
@@ -237,7 +237,24 @@ class Organism:IComparable<Organism>
     {
         get
         {
-            return true;
+            // sprawdzam czy fenotyp ma wszystkie miasta
+            List<uint> list = new List<uint>();
+            for (uint i = 0; i < Phenotype.Length; i++)
+            {
+                list.Add(i);
+            }
+            foreach (uint city in genotype)
+            {
+                list.Remove(city);
+            }
+            if (list.Count == 0) return true;
+            else
+            {
+
+                throw new Exception("Niepoprawny osobnik");
+                return false;
+            }
+
         }
     }
 

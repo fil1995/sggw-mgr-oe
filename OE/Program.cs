@@ -9,29 +9,31 @@ class Program
 
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
-        Cities c = new Cities("fm9.tsp");
+        Cities c = new Cities("wi29.tsp");
         Organism o = new Organism(c, GenotypeRepresentation.PATH);
         o.SetRandomGenotype(random);
         Organism o2 = new Organism(c, GenotypeRepresentation.PATH);
         o2.SetRandomGenotype(random);
         Console.WriteLine(o);
         Console.WriteLine(o2);
-        Crossover cr = new CrossoverPathCX();
+        Crossover cr = new CrossoverPathPMX();
         Organism o3 = cr.Cross(o, o2, random);
         Console.WriteLine(o3);
-        
+        Console.WriteLine(o.IsVaild);
+        Console.WriteLine(o2.IsVaild);
+        Console.WriteLine(o3.IsVaild);
 
         // Test01 t = new Test01(random);
 
-        //////////////////////  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
+        ////////////////////// fm9  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
         //Algorithm a = new Algorithm(random,
         //                                                        new StopNumEpochs(10000),
         //                                                        new SelectionRouletteRank(),
-        //                                                        new CrossoverOrdinalSinglePoint(),
-        //                                                        new MutationOridinalOnePoint(0.5), 
+        //                                                        new CrossoverPathPMX(),
+        //                                                        new MutationPathTwoOpt(0.5),
         //                                                        "dj38.tsp",
-        //                                                        1000, true, false
+        //                                                        100, true, false
         //                                                        );
         //a.Run(false, "test.txt");
 

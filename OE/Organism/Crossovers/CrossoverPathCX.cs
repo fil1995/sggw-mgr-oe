@@ -26,24 +26,7 @@ class CrossoverPathCX : Crossover
             index = position;
 
         }
-
-
-
-        while (!cycleReached)
-        {
-            Console.WriteLine($"index:{index} value:{value} nextIndex:{nextIndex}");
-
-            genotype[index] = value;
-            index = nextIndex;
-            value = a.genotype[index];
-            nextIndex = CityIndex(a.genotype, b.genotype[index]);
-
-            if (nextIndex==0)
-            {
-                cycleReached = true;
-            }
-        }
-
+        
         // teraz tam gdzie nulle, to przepisuje z rodzica b
         for (int i = 0; i < b.genotype.Length; i++)
         {

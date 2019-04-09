@@ -22,7 +22,7 @@ class CrossoverPathOX : Crossover
             cutPoint1 = cutPoint2;
             cutPoint2 = tmp;
         }
-        Console.WriteLine($"Cut point: {cutPoint1} do {cutPoint2}");
+        //Console.WriteLine($"Cut point: {cutPoint1} do {cutPoint2}");
 
         // przepisuje wartości z tego przedziału do dziecka z a
         for (int i = cutPoint1; i < cutPoint2; i++)

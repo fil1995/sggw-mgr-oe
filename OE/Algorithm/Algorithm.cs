@@ -135,6 +135,11 @@ class Algorithm
         // i tak aby znaleźć najelpszego musimy znać fitnessy każego
         double calculateOnly = newOrganism.Fitness;
 
+        if (!newOrganism.IsVaild)
+        {
+            throw new Exception("Nieprawidłowy osobnik!!!");
+        }
+
         return newOrganism;
     }
 

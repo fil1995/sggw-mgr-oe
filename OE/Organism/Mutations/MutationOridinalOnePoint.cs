@@ -9,6 +9,9 @@ class MutationOridinalOnePoint:Mutation
     public MutationOridinalOnePoint(double mutationPercentage) : base(mutationPercentage) { }
     public override void Mutate(Organism o, Random r)
     {
+        if (o.genotypeRepresentation != genotypeRepresentation )
+            throw new NotImplementedException("Reprezentacja genotypu nie zgadza sie z metodą mutacji");
+
         // mutujemy jeden bit
         if (r.NextDouble() <= mutationPercentage) // 10% wyników
         {
