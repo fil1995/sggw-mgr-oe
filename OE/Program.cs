@@ -27,15 +27,15 @@ class Program
 
         ////////////////////// fm9  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
-        //Algorithm a = new Algorithm(random,
-        //                                                        new StopNumEpochs(10000),
-        //                                                        new SelectionRouletteRank(),
-        //                                                        new CrossoverPathPMX(),
-        //                                                        new MutationPathTwoOpt(0.5),
-        //                                                        "dj38.tsp",
-        //                                                        100, true, false
-        //                                                        );
-        //a.Run(false, "test.txt");
+        Algorithm a = new Algorithm(random,
+                                                                new StopNumEpochs(10000),
+                                                                new SelectionRouletteRank(),
+                                                                new CrossoverPathPMX(),
+                                                                new MutationPathTwoOpt(0.5),
+                                                                "dj38.tsp",
+                                                                100, true, false
+                                                                );
+        a.Run(false, "test.txt");
 
 
         //Organism o1 = new Organism();

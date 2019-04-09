@@ -28,16 +28,16 @@ class CrossoverPathPMX : Crossover
             cutPoint1 = cutPoint2;
             cutPoint2 = tmp;
         }
-        Console.WriteLine($"a: {a}");
-        Console.WriteLine($"b: {b}");
-        Console.WriteLine($"Cross: {cutPoint1} do {cutPoint2}");
+        //Console.WriteLine($"a: {a}");
+        //Console.WriteLine($"b: {b}");
+        //Console.WriteLine($"Cross: {cutPoint1} do {cutPoint2}");
 
         // przepisuje wartości z tego przedziału do dziecka z rodzica a
         for (int i = cutPoint1; i < cutPoint2; i++)
         {
             genotype[i] = a.genotype[i];
         }
-        Console.WriteLine(GenotypeToString(genotype));
+        //Console.WriteLine(GenotypeToString(genotype));
 
         for (int i = 0; i < cutPoint1; i++)
         {
@@ -47,8 +47,8 @@ class CrossoverPathPMX : Crossover
                 genotype[i] = b.genotype[i];
             }
         }
-        Console.WriteLine("te ktore moge 0->cut1");
-        Console.WriteLine(GenotypeToString(genotype));
+        //Console.WriteLine("te ktore moge 0->cut1");
+        //Console.WriteLine(GenotypeToString(genotype));
 
         for (int i = cutPoint2; i < a.genotype.Length; i++)
         {
@@ -58,9 +58,9 @@ class CrossoverPathPMX : Crossover
                 genotype[i] = b.genotype[i];
             }
         }
-        Console.WriteLine("te ktore moge cut2->end");
-        Console.WriteLine(GenotypeToString(genotype));
-        Console.WriteLine("wypełniam nulle");
+        //Console.WriteLine("te ktore moge cut2->end");
+        //Console.WriteLine(GenotypeToString(genotype));
+        //Console.WriteLine("wypełniam nulle");
         // teraz zostało wypełnić nulle
         for (int i = 0; i < a.genotype.Length; i++)
         {
@@ -69,13 +69,13 @@ class CrossoverPathPMX : Crossover
                 // jeśli nie ma wartości to możemy wypełnić z macierzy przejścia
                 // trzeba sprawdzic, czy przypadkiem już nie ma wpisanego takiego miasta - wtedy wstawiam inne
                 uint insert = Mapping(a, b, b.genotype[i], cutPoint1, cutPoint2);
-                Console.WriteLine($"{i}: zamiana {b.genotype[i]} na {insert}");
+                //Console.WriteLine($"{i}: zamiana {b.genotype[i]} na {insert}");
                 if (HasCity(genotype, insert)) throw new Exception("PMX - blad macierzy przejscia");
                 genotype[i] = insert;
             }
         }
-        Console.WriteLine("wypełniam nule");
-        Console.WriteLine(GenotypeToString(genotype));
+        //Console.WriteLine("wypełniam nule");
+        //Console.WriteLine(GenotypeToString(genotype));
 
         Organism o = new Organism(a.TSPcities, a.genotypeRepresentation);
         for (int i = 0; i < genotype.Length; i++)
@@ -121,7 +121,7 @@ class CrossoverPathPMX : Crossover
                 }
                 else
                 {
-                    Console.WriteLine("w przedziale jest juz takie miasto - rekurencja");
+                    //Console.WriteLine("w przedziale jest juz takie miasto - szukam kolejnego mapowania");
                     return Mapping(a, b, mapTo, cut1, cut2);
                 }
             }
