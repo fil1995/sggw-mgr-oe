@@ -224,7 +224,7 @@ class Organism:IComparable<Organism>
         string ret = "{";
         foreach (uint item in Phenotype)
         {
-            ret += $"{item + 1} ";
+            ret += $"{item} ";
         }
         ret += "}";
         return ret;

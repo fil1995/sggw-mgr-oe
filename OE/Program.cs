@@ -10,18 +10,16 @@ class Program
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
         Cities c = new Cities("fm9.tsp");
-        Organism o = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
+        Organism o = new Organism(c, GenotypeRepresentation.PATH);
         o.SetRandomGenotype(random);
+        Organism o2 = new Organism(c, GenotypeRepresentation.PATH);
+        o2.SetRandomGenotype(random);
         Console.WriteLine(o);
-
-        o.ConvertToAdjecency();
-        Console.WriteLine(o);
-
-        o.ConvertToOrdinal();
-        Console.WriteLine(o);
-
-        o.ConvertToPath();
-        Console.WriteLine(o);
+        Console.WriteLine(o2);
+        Crossover cr = new CrossoverPathCX();
+        Organism o3 = cr.Cross(o, o2, random);
+        Console.WriteLine(o3);
+        
 
         // Test01 t = new Test01(random);
 
@@ -63,6 +61,19 @@ class Program
         Console.ReadKey();
     }
 }
+
+
+/// LAB 07
+//Do zaimplementowania i przebadania różne sposoby krzyżowania: 
+
+//- krzyżowanie przez naprzemienne wybieranie krawędzi(str. 230 [1]),
+//- krzyżowanie przez wymianę podtras(j.w.),
+//- PMX(str. 234 [1]),  ok
+//- OX(str. 235 [1]),
+//- CX(str. 236 [1]),
+//- inver-over(str. 257 [1]).
+
+
 
 
 /// <summary>

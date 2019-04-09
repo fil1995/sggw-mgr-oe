@@ -13,13 +13,7 @@ class CrossoverOrdinalSinglePoint:Crossover
 
         // losujemy punkt podziału
         int cutPoint1 = r.Next(b.genotype.Length);
-        int cutPoint2 = r.Next(b.genotype.Length);
-        if (cutPoint1 > cutPoint2)
-        {
-            int tmp = cutPoint1;
-            cutPoint1 = cutPoint2;
-            cutPoint2 = tmp;
-        }
+
 
         // Organism o = (Organism)a.MemberwiseClone();
         Organism o = new Organism(a.TSPcities, a.genotypeRepresentation);
@@ -27,11 +21,11 @@ class CrossoverOrdinalSinglePoint:Crossover
         // dwa pkt podziału
         for (int i = 0; i < a.genotype.Length; i++)
         {
-            if (i > cutPoint1 && i < cutPoint2)
+            if (i > cutPoint1)
                 o.genotype[i] = a.genotype[i];
             else
                 o.genotype[i] = b.genotype[i];
         }
-        return o; //return new Organism((a.genotype & mask) | (b.genotype & ~mask));
+        return o;
     }
 }
