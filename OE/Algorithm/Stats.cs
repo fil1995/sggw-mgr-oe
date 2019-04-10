@@ -43,27 +43,13 @@ class Stats
         return historyEpochs.Count-1;
 
     }
-    //public override string ToString()
-    //{
-    //    return  "::Stats:: epochs:" + algorithm.CurrentEpoch +" Population size: "+ algorithm.population.Length + " Time: " + time.ElapsedMilliseconds + "milis\n" +
-    //            "Organism Type:" + algorithm.Best.GetTypeOfOrganism() + 
-    //            " | Stop condition:" + algorithm.StopConditionType +
-    //            " | Selection Type:" + algorithm.selectionTypeName +
-    //            " | Mutation:" + algorithm.mutationPercentage +
-    //            "\n-----------------\n" +
-    //            "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
-    //            "Best: f(" + algorithm.Best.Phenotype + ")=" + algorithm.Best.Fitness + "\n" +
-    //            " 95% on: " + NumEpochFromBest(0.95) + "epoch f(" + historyEpochs[NumEpochFromBest(0.95)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.95)].best.Fitness + "\n" +
-    //            " 90% on: " + NumEpochFromBest(0.9) + "epoch f(" + historyEpochs[NumEpochFromBest(0.9)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.9)].best.Fitness + "\n" +
-    //            " 80% on: " + NumEpochFromBest(0.8) + "epoch f(" + historyEpochs[NumEpochFromBest(0.8)].best.Phenotype + ")=" + historyEpochs[NumEpochFromBest(0.8)].best.Fitness + "\n";
-    //}
     public override string ToString()
     {
         return "::Stats:: epochs:" + algorithm.CurrentEpoch + " Population size: " + algorithm.population.Length + " Time: " + time.Elapsed +" file:"+algorithm.TSPcities.name +"\n" +
-                "Organism Type:" + algorithm.Best.GetTypeOfOrganism() +
-                " | Stop condition:" + algorithm.StopConditionType +
-                " | Selection Type:" + algorithm.selectionTypeName +
-                " | Mutation:" + algorithm.mutation.mutationPercentage +
+                "Crossover:" + algorithm.crossover.CrossoverTypeName +
+                " | Stop:" + algorithm.StopConditionType +
+                " | Selection:" + algorithm.selectionTypeName +
+                " | Mutation:" +algorithm.mutation.MutationTypeName+": " + algorithm.mutation.mutationPercentage +"%"+
                 "\n-----------------\n" +
                 "Last population deviation: " + algorithm.PopulationDeviation() + "\n" +
                 "Best distance:" + algorithm.Best.Distance + "\n" +

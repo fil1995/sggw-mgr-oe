@@ -9,35 +9,35 @@ class Program
 
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
-        Cities c = new Cities("fm9.tsp");
-        Organism o = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
-        o.SetRandomGenotype(random);
-        o.genotype = new uint[] { 5,  8 , 1 , 6 , 2 , 4 , 7 , 0 , 3 };
-        Organism o2 = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
-        o2.SetRandomGenotype(random);
-        o.genotype = new uint[] { 2 , 7 , 6 , 0 , 1,  4,  8 , 3 , 5 };
-        Console.WriteLine(o);
-        Console.WriteLine(o2);
-        Crossover cr = new CrossoverAdjacencyAlternatingEdges();
-        Organism o3 = cr.Cross(o, o2, random);
-        Console.WriteLine(o3);
-        Console.WriteLine(o.IsVaild);
-        Console.WriteLine(o2.IsVaild);
-        Console.WriteLine(o3.IsVaild);
+        //Cities c = new Cities("fm9.tsp");
+        //Organism o = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
+        //o.SetRandomGenotype(random);
+        //o.genotype = new uint[] { 5,  8 , 1 , 6 , 2 , 4 , 7 , 0 , 3 };
+        //Organism o2 = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
+        //o2.SetRandomGenotype(random);
+        //o.genotype = new uint[] { 2 , 7 , 6 , 0 , 1,  4,  8 , 3 , 5 };
+        //Console.WriteLine(o);
+        //Console.WriteLine(o2);
+        //Crossover cr = new CrossoverAdjacencyAlternatingEdges();
+        //Organism o3 = cr.Cross(o, o2, random);
+        //Console.WriteLine(o3);
+        //Console.WriteLine(o.IsVaild);
+        //Console.WriteLine(o2.IsVaild);
+        //Console.WriteLine(o3.IsVaild);
 
-        Organism o4 = new Organism(c, GenotypeRepresentation.PATH);
-        o4.genotype = new uint[] { 0,1,2,3,4,5,6,7,8 };
+        //Organism o4 = new Organism(c, GenotypeRepresentation.PATH);
+        //o4.genotype = new uint[] { 0,1,2,3,4,5,6,7,8 };
 
         // Test01 t = new Test01(random);
 
         ////////////////////// fm9  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(10000),
-                                                                new SelectionRouletteRank(),
-                                                                new InverOver(0.4),
-                                                                new MutationAdjacencyUsingPathTwoOpt(0.5),
-                                                                "dj38.tsp",
+                                                                new StopNumEpochs(100),
+                                                                new SelectionTournament(),
+                                                                new CrossoverPathCX(),
+                                                                new MutationPathTwoOpt(0.5),
+                                                                "uy734.tsp",
                                                                 100, true, false
                                                                 );
         a.Run(false, "test.txt");
