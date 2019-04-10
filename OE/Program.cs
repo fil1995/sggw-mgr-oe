@@ -28,24 +28,19 @@ class Program
         Organism o4 = new Organism(c, GenotypeRepresentation.PATH);
         o4.genotype = new uint[] { 0,1,2,3,4,5,6,7,8 };
 
-        Console.WriteLine("------------------");
-        Console.WriteLine(o4);
-        o4.genotype = InvertSubTour(o4.genotype, 7, 2);
-        Console.WriteLine(o4);
-
         // Test01 t = new Test01(random);
 
         ////////////////////// fm9  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
-        //Algorithm a = new Algorithm(random,
-        //                                                        new StopNumEpochs(10000),
-        //                                                        new SelectionRouletteRank(),
-        //                                                        new InverOver(),
-        //                                                        new MutationAdjacencyUsingPathTwoOpt(0.5),
-        //                                                        "dj38.tsp",
-        //                                                        100, true, false
-        //                                                        );
-        //a.Run(false, "test.txt");
+        Algorithm a = new Algorithm(random,
+                                                                new StopNumEpochs(10000),
+                                                                new SelectionRouletteRank(),
+                                                                new InverOver(),
+                                                                new MutationAdjacencyUsingPathTwoOpt(0.5),
+                                                                "dj38.tsp",
+                                                                100, true, false
+                                                                );
+        a.Run(false, "test.txt");
 
 
         //Organism o1 = new Organism();
@@ -74,36 +69,7 @@ class Program
     }
 
 
-    static uint[] InvertSubTour(uint[] Genotype, uint From, uint To)
-    {
-        uint[] genotype = Genotype;
-        if (From == To) return genotype;
 
-        uint from = From, to = To;
-        // do poprawki..... bo musi być opcja 2
-
-        from++;
-        uint length = 0;
-        if (from > to)
-        {
-            length += (uint)(genotype.Length - (int)from);
-            length += to;
-        }
-        else
-        {
-            length = to - from;
-        }
-        for (uint j = 0; j <= length/2; j++)
-        {
-            uint X = (from + j)%(uint)genotype.Length;
-            uint Y = (from+length - j) % (uint)genotype.Length;
-            Console.WriteLine($"zamieniam {X} z {Y}");
-            uint tmp = genotype[X];
-            genotype[X] = genotype[Y];
-            genotype[Y] = tmp;
-        }
-        return genotype;
-    }
 
 
 }

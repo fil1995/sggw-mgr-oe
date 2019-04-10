@@ -4,9 +4,13 @@ using System.Text;
 
 class InverOver : Crossover
 {
-    double p = 0.1;
+    double p;
     public override GenotypeRepresentation genotypeRepresentation => GenotypeRepresentation.PATH;
     public override bool PopulationOrParents => true;
+    public InverOver(double p)
+    {
+        this.p = p;
+    }
     public override void Cross(Organism[] population, Random r)
     {
         // dla każdego osobnika w populacji
@@ -126,28 +130,30 @@ class InverOver : Crossover
         }
         throw new Exception("Nie ma takiego miasta");
     }
-    uint[] InvertSubTour(uint[] Genotype,uint From, uint To)
+    uint[] InvertSubTour(uint[] Genotype, uint From, uint To)
     {
         uint[] genotype = Genotype;
         if (From == To) return genotype;
 
-        uint from=From, to = To;
-        // do poprawki..... bo musi być opcja 2
+        uint from = From, to = To;
+        
+        // jeśli odwracamy sciezke, ale zaczynamy pozniej niż konczymy
+        from++;
+        uint length = 0;
         if (from > to)
         {
-            uint tmp2 = from;
-            from = to;
-            to = tmp2;
+            length += (uint)(genotype.Length - (int)from);
+            length += to;
         }
-
-        from++; 
-        uint length = (to - from) / 2;
-
-        for (uint j = 0; j <= length; j++)
+        else
         {
-            uint X = from + j;
-            uint Y = to - j;
-
+            length = to - from;
+        }
+        for (uint j = 0; j <= length / 2; j++)
+        {
+            uint X = (from + j) % (uint)genotype.Length;
+            uint Y = (from + length - j) % (uint)genotype.Length;
+            // Console.WriteLine($"zamieniam {X} z {Y}");
             uint tmp = genotype[X];
             genotype[X] = genotype[Y];
             genotype[Y] = tmp;
