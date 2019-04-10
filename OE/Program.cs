@@ -9,14 +9,16 @@ class Program
 
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
-        Cities c = new Cities("wi29.tsp");
-        Organism o = new Organism(c, GenotypeRepresentation.PATH);
+        Cities c = new Cities("fm9.tsp");
+        Organism o = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
         o.SetRandomGenotype(random);
-        Organism o2 = new Organism(c, GenotypeRepresentation.PATH);
+        o.genotype = new uint[] { 5,  8 , 1 , 6 , 2 , 4 , 7 , 0 , 3 };
+        Organism o2 = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
         o2.SetRandomGenotype(random);
+        o.genotype = new uint[] { 2 , 7 , 6 , 0 , 1,  4,  8 , 3 , 5 };
         Console.WriteLine(o);
         Console.WriteLine(o2);
-        Crossover cr = new CrossoverPathPMX();
+        Crossover cr = new CrossoverAdjacencyAlternatingEdges();
         Organism o3 = cr.Cross(o, o2, random);
         Console.WriteLine(o3);
         Console.WriteLine(o.IsVaild);
@@ -30,8 +32,8 @@ class Program
         Algorithm a = new Algorithm(random,
                                                                 new StopNumEpochs(10000),
                                                                 new SelectionRouletteRank(),
-                                                                new CrossoverPathPMX(),
-                                                                new MutationPathTwoOpt(0.5),
+                                                                new CrossoverAdjacencySubtourChunks(),
+                                                                new MutationAdjacencyUsingPathTwoOpt(0.5),
                                                                 "dj38.tsp",
                                                                 100, true, false
                                                                 );
@@ -68,11 +70,11 @@ class Program
 /// LAB 07
 //Do zaimplementowania i przebadania różne sposoby krzyżowania: 
 
-//- krzyżowanie przez naprzemienne wybieranie krawędzi(str. 230 [1]),
-//- krzyżowanie przez wymianę podtras(j.w.),
+//- krzyżowanie przez naprzemienne wybieranie krawędzi(str. 230 [1]), ok
+//- krzyżowanie przez wymianę podtras(j.w.), ok
 //- PMX(str. 234 [1]),  ok
-//- OX(str. 235 [1]),
-//- CX(str. 236 [1]),
+//- OX(str. 235 [1]), ok
+//- CX(str. 236 [1]), ok
 //- inver-over(str. 257 [1]).
 
 
