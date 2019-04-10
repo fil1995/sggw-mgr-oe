@@ -35,7 +35,7 @@ class Program
         Algorithm a = new Algorithm(random,
                                                                 new StopNumEpochs(10000),
                                                                 new SelectionRouletteRank(),
-                                                                new InverOver(),
+                                                                new InverOver(0.4),
                                                                 new MutationAdjacencyUsingPathTwoOpt(0.5),
                                                                 "dj38.tsp",
                                                                 100, true, false
