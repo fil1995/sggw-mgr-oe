@@ -4,6 +4,7 @@ using System.Text;
 
 abstract class Mutation
 {
+    public string MutationTypeName => this.GetType().Name;
     public virtual GenotypeRepresentation genotypeRepresentation => throw new NotImplementedException("define genotypeRepresentation");
     public double mutationPercentage;
 

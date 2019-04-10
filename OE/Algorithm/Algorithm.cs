@@ -26,7 +26,7 @@ class Algorithm
     public Mutation mutation;
 
     public Algorithm(Random r,
-        StopCondition stopCondition, SelectionType selectionType, Crossover crossover,Mutation mutation,string tspFileName,
+        StopCondition stopCondition, SelectionType selectionType, Crossover crossover, Mutation mutation, string tspFileName,
         int populationSize = 20,
         bool verbose = true, bool verbose2 = false)
     {
@@ -72,42 +72,48 @@ class Algorithm
 
     void RunEpoch()
     {
-        // musze wygenerowac nową populacje
-        Organism[] newPopulation = new Organism[population.Length];
+        if (crossover.PopulationOrParents)
+        {
+            // działam na całej populacji
+            crossover.Cross(population, r);
 
-        //for (int i = 0; i < population.Length; i++)
-        //{
-        //    newPopulation[i] = CreateChild();
-        //}
+        }
+        else
+        {
+            // działam na wybranych rodzicach
 
-        //System.Threading.Tasks.Parallel.For(0, population.Length, i =>
-        //{
-        //    newPopulation[i] = CreateChild();
-        //});
+            // musze wygenerowac nową populacje
+            Organism[] newPopulation = new Organism[population.Length];
 
+            //for (int i = 0; i < population.Length; i++)
+            //{
+            //    newPopulation[i] = CreateChild();
+            //}
 
-        /////////////////////////////////////////////
-        ParallelOptions po = new ParallelOptions();
-        //po.MaxDegreeOfParallelism = 4;
-
-        Parallel.For<Random>(0, population.Length, po,
-            () => { lock (globalLock) { return new Random(r.Next()); } },
-            (i, loop, local) =>
-            {
-                newPopulation[i] = CreateChild(local);
-                return local;
-            },
-                (x) => { }
-        );
-
-        /////////////////////////////////////////////
+            //System.Threading.Tasks.Parallel.For(0, population.Length, i =>
+            //{
+            //    newPopulation[i] = CreateChild();
+            //});
 
 
+            /////////////////////////////////////////////
+            ParallelOptions po = new ParallelOptions();
+            //po.MaxDegreeOfParallelism = 4;
 
+            Parallel.For<Random>(0, population.Length, po,
+                () => { lock (globalLock) { return new Random(r.Next()); } },
+                (i, loop, local) =>
+                {
+                    newPopulation[i] = CreateChild(local);
+                    return local;
+                },
+                    (x) => { }
+            );
 
+            /////////////////////////////////////////////
 
-        population = newPopulation;
-
+            population = newPopulation;
+        }
         // sprawdzamy czy selekcja wymaga posortowanej populacji
         if (selectionType.NeedSortedPopulation)
             Array.Sort(population);
@@ -128,7 +134,7 @@ class Algorithm
         //return newOrganism;
 
         // Organism newOrganism = Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
-        Organism newOrganism = crossover.Cross(selA,selB,r);
+        Organism newOrganism = crossover.Cross(selA, selB, r);
 
         mutation.Mutate(newOrganism, r);
 
@@ -148,7 +154,7 @@ class Algorithm
         //OrganismFactory<TOrganism> f = new OrganismFactory<TOrganism>();
         for (int i = 0; i < population.Length; i++)
         {
-            population[i] = new Organism(TSPcities,crossover.genotypeRepresentation,r);
+            population[i] = new Organism(TSPcities, crossover.genotypeRepresentation, r);
             //population[i] = f.CreateOrganism(r, TSPcities);
         }
         // aktualizacja najlepszego osobnika
