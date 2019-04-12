@@ -7,7 +7,7 @@ using System.Linq;
 class Test01
 {
     Random r;
-    int numRun = 1000;
+    int numOfRuns;
     int epochs;
     Stats[] history;
 
@@ -16,10 +16,35 @@ class Test01
     double[] epochsMax;
     double[] epochsMin;
 
-    public Test01(Random r)
+    StopCondition stopCondition;
+    SelectionType selectionType;
+    Crossover crossover;
+    Mutation mutation;
+    Cities cities;
+    int populationSize;
+    string fileName;
+
+    public Test01(Random r, StopCondition stopCondition,
+    SelectionType selectionType,
+    Crossover crossover,
+    Mutation mutation,
+    Cities cities,
+    int populationSize,
+        int numOfRuns,
+        string fileName)
     {
         this.r = r;
-        history = new Stats[numRun];
+        this.stopCondition = stopCondition;
+        this.selectionType = selectionType;
+        this.crossover = crossover;
+        this.mutation = mutation;
+        this.cities = cities;
+        this.populationSize = populationSize;
+        this.numOfRuns = numOfRuns;
+        this.fileName = fileName;
+
+
+        history = new Stats[numOfRuns];
         RunTest();
     }
     void RunTest()
@@ -27,23 +52,23 @@ class Test01
         for (int i = 0; i < history.Length; i++)
         {
             history[i] = RunAlgorithm();
+            Console.WriteLine($"{i}\' run ");
         }
 
         ComputeStats();
-        SaveStats("stats.txt");
+        SaveStats(fileName);
 
     }
 
     Stats RunAlgorithm()
     {
         Algorithm a = new Algorithm(r,
-                                                                new StopNumEpochs(50),
-                                                                new SelectionRouletteRank(), 
-                                                                new CrossoverOrdinalSinglePoint(),
-                                                                new MutationOridinalOnePoint(0.2),
-                                                                "dj38.tsp",
-                                                                10,  false, false
-                                                                );
+                                    stopCondition,
+                                    selectionType, 
+                                    crossover,
+                                    mutation,
+                                    cities,
+                                    populationSize,  false, false);
         a.Run();
         return a.stats;
     }
@@ -63,19 +88,19 @@ class Test01
         {
             double tmpAvg = 0;
             double tmpAvgDeviation = 0;
-            double tmpMin = history[0].historyEpochs[epoch].best.Fitness;
-            double tmpMax = history[0].historyEpochs[epoch].best.Fitness;
+            double tmpMin = history[0].historyEpochs[epoch].best.Distance;
+            double tmpMax = history[0].historyEpochs[epoch].best.Distance;
             // dla każdego uruchomienia
-            for (int run = 0; run < numRun; run++)
+            for (int run = 0; run < numOfRuns; run++)
             {
                 // licze sume wynikow
-                tmpAvg += history[run].historyEpochs[epoch].best.Fitness;
+                tmpAvg += history[run].historyEpochs[epoch].best.Distance;
                 tmpAvgDeviation += history[run].historyEpochs[epoch].populationDeviation;
-                if (tmpMin > history[run].historyEpochs[epoch].best.Fitness) tmpMin = history[run].historyEpochs[epoch].best.Fitness;
-                if (tmpMax < history[run].historyEpochs[epoch].best.Fitness) tmpMax = history[run].historyEpochs[epoch].best.Fitness;
+                if (tmpMin > history[run].historyEpochs[epoch].best.Distance) tmpMin = history[run].historyEpochs[epoch].best.Distance;
+                if (tmpMax < history[run].historyEpochs[epoch].best.Distance) tmpMax = history[run].historyEpochs[epoch].best.Distance;
             }
-            epochsAvg[epoch] = tmpAvg / (double)numRun;
-            epochsAvgDeviation[epoch] = tmpAvgDeviation / (double)numRun;
+            epochsAvg[epoch] = tmpAvg / (double)numOfRuns;
+            epochsAvgDeviation[epoch] = tmpAvgDeviation / (double)numOfRuns;
             epochsMin[epoch] = tmpMin;
             epochsMax[epoch] = tmpMax;
 
@@ -85,10 +110,18 @@ class Test01
 
     public void SaveStats(string filename)
     {
+        try
+        {
+            File.Delete(filename);
+            Console.WriteLine("Usuwanie pliku:"+filename);
+        }
+        catch (Exception e)
+        {
+        }
 
         using (var stream = File.AppendText(filename))
         {
-            stream.WriteLine("n_epoch;avgDeviation;avgFunction;minFunction,maxFunction");
+            stream.WriteLine("n_epoch;avgDistanceDeviation;avgDistance;minDistance;maxDistance");
             for (int i = 0; i < epochs; i++)
             {
                 stream.WriteLine($"{i};{epochsAvgDeviation[i]};{epochsAvg[i]};{epochsMin[i]};{epochsMax[i]};");

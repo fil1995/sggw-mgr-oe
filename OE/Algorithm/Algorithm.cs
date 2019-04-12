@@ -26,7 +26,7 @@ class Algorithm
     public Mutation mutation;
 
     public Algorithm(Random r,
-        StopCondition stopCondition, SelectionType selectionType, Crossover crossover, Mutation mutation, string tspFileName,
+        StopCondition stopCondition, SelectionType selectionType, Crossover crossover, Mutation mutation, Cities TSPcities,
         int populationSize = 20,
         bool verbose = true, bool verbose2 = false)
     {
@@ -44,17 +44,17 @@ class Algorithm
         this.crossover = crossover;
         this.mutation = mutation;
 
-        TSPcities = new Cities(tspFileName);
+        this.TSPcities = TSPcities;
 
     }
-    public void Run(bool saveResults = false, string filename = "")
+    public void Run(string filename)
+    {
+        Run();
+        stats.Save(filename);
+    }
+    public void Run()
     {
         GeneratePopulation();
-        Run();
-        if (saveResults) stats.Save(filename);
-    }
-    void Run()
-    {
         stats.StartLogging();
         if (verbose2) Console.WriteLine(GetPopulationValues());
         while (!stopCondition.Stop())
@@ -76,7 +76,6 @@ class Algorithm
         {
             // działam na całej populacji
             crossover.Cross(population, r);
-
         }
         else
         {

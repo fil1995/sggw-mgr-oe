@@ -10,17 +10,15 @@ class Program
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
         //Cities c = new Cities("fm9.tsp");
-        //Organism o = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
+        //Organism o = new Organism(c, GenotypeRepresentation.ORDINAL);
         //o.SetRandomGenotype(random);
-        //o.genotype = new uint[] { 5,  8 , 1 , 6 , 2 , 4 , 7 , 0 , 3 };
-        //Organism o2 = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
+        //Organism o2 = new Organism(c, GenotypeRepresentation.ORDINAL);
         //o2.SetRandomGenotype(random);
-        //o.genotype = new uint[] { 2 , 7 , 6 , 0 , 1,  4,  8 , 3 , 5 };
-        //Console.WriteLine(o);
-        //Console.WriteLine(o2);
-        //Crossover cr = new CrossoverAdjacencyAlternatingEdges();
+        //Console.WriteLine(o.Genotype + o);
+        //Console.WriteLine(o2.Genotype + o2);
+        //Crossover cr = new CrossoverOrdinalSinglePoint();
         //Organism o3 = cr.Cross(o, o2, random);
-        //Console.WriteLine(o3);
+        //Console.WriteLine(o3.Genotype + o3);
         //Console.WriteLine(o.IsVaild);
         //Console.WriteLine(o2.IsVaild);
         //Console.WriteLine(o3.IsVaild);
@@ -28,19 +26,34 @@ class Program
         //Organism o4 = new Organism(c, GenotypeRepresentation.PATH);
         //o4.genotype = new uint[] { 0,1,2,3,4,5,6,7,8 };
 
-        // Test01 t = new Test01(random);
+        //Test01 t = new Test01(random,   new StopNumEpochs(500),
+        //                                new SelectionTournament(),
+        //                                new CrossoverPathOX(),
+        //                                new MutationPathTwoOpt(0.5),
+        //                                new Cities("wi29.tsp"),
+        //                                100);
 
         ////////////////////// fm9  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
-        Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(100),
-                                                                new SelectionTournament(),
-                                                                new CrossoverPathCX(),
-                                                                new MutationPathTwoOpt(0.5),
-                                                                "uy734.tsp",
-                                                                100, true, false
-                                                                );
-        a.Run(false, "test.txt");
+        //Algorithm a = new Algorithm(random,
+        //                                                        new StopNumEpochs(50000),
+        //                                                        new SelectionTournament(),
+        //                                                        new CrossoverPathPMX(),
+        //                                                        new MutationPathTwoOpt(0.5),
+        //                                                        "wi29.tsp",
+        //                                                        100, true, false
+        //                                                        );
+        //a.Run("test.txt");
+
+        //Algorithm a = new Algorithm(random,
+        //                                                        new StopNumEpochs(50),
+        //                                                        new SelectionRouletteRank(),
+        //                                                        new CrossoverOrdinalSinglePoint(),
+        //                                                        new MutationNone(0.2),
+        //                                                        "dj38.tsp",
+        //                                                        100, true, false
+        //                                                        );
+        //a.Run();
 
 
         //Organism o1 = new Organism();
@@ -65,7 +78,121 @@ class Program
         //                                                        )
         //                                        );
 
-        Console.ReadKey();
+        // ArgStop Stop Select Cross MutationArg Mutation CitiesFile PopulationSize SaveFile
+        /// czytanie z parametrów
+        StopCondition stopCondition = null ;
+        double argument = double.Parse(args[0]);
+
+        switch (args[1])
+        {
+            case "StopNumEpochs":
+                stopCondition = new StopNumEpochs(Convert.ToInt32(argument));
+                break;
+            case "StopPopulationDeviation":
+                stopCondition = new StopPopulationDeviation(argument);
+                    break;
+            case "StopTime":
+                stopCondition = new StopTime(Convert.ToInt32(argument));
+                break;
+            default:
+                break;
+        }
+        SelectionType selectionType=null;
+        switch (args[2])
+        {
+            case "SelectionRoulette":
+                selectionType = new SelectionRoulette();
+                break;
+            case "SelectionRouletteRank":
+                selectionType = new SelectionRouletteRank();
+                break;
+            case "SelectionTournament":
+                selectionType = new SelectionTournament();
+                break;
+            default:
+                Console.WriteLine("brak selection type");
+                break;
+        }
+        Crossover crossover=null;
+        
+
+        argument = double.Parse(args[3]);
+
+
+        Console.WriteLine(args[4]);
+        switch (args[4])
+        {
+            case "CrossoverAdjacencyAlternatingEdges":
+                crossover = new CrossoverAdjacencyAlternatingEdges();
+
+                break;
+            case "CrossoverAdjacencySubtourChunks":
+                crossover = new CrossoverAdjacencySubtourChunks();
+                break;
+            case "CrossoverOrdinalSinglePoint":
+                crossover = new CrossoverOrdinalSinglePoint();
+                break;
+            case "CrossoverPathCX":
+                crossover = new CrossoverPathCX();
+                break;
+            case "CrossoverPathOX":
+                crossover = new CrossoverPathOX();
+                break;
+            case "CrossoverPathPMX":
+                crossover = new CrossoverPathPMX();
+                break;
+            case "InverOver":
+                crossover = new InverOver(argument);
+                break;
+            default:
+                Console.WriteLine("brak crossover type");
+                break;
+        }
+
+
+
+        Mutation mutation=null;
+
+        Console.WriteLine(args[5]);
+        switch (args[5])
+        {
+            case "MutationAdjacencyUsingPathTwoOpt":
+                mutation = new MutationAdjacencyUsingPathTwoOpt(argument);
+                break;
+            case "MutationNone":
+                mutation = new MutationNone(argument);
+                break;
+            case "MutationOridinalOnePoint":
+                mutation = new MutationOridinalOnePoint(argument);
+                break;
+            case "MutationPathSwap":
+                mutation = new MutationPathSwap(argument);
+                break;
+            case "MutationPathTwoOpt":
+                mutation = new MutationPathTwoOpt(argument);
+                break;
+            default:
+                Console.WriteLine("brak mutation type");
+                break;
+        }
+        Cities cities = new Cities(args[6]);
+
+        int populationSize = int.Parse(args[7]);
+        int numberRuns = int.Parse(args[8]);
+        
+
+        Test01 t = new Test01(random, stopCondition,
+                               selectionType,
+                                crossover,
+                                mutation,
+                               cities,
+                                populationSize,
+                                numberRuns,
+                                args[9]);
+
+
+
+        //Console.ReadKey();
     }
 
 

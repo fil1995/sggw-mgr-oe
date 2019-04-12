@@ -15,6 +15,6 @@ abstract class Crossover
     public virtual void Cross(Organism[] population, Random r)
     {
 
-        throw new NotImplementedException("implement Population");
+        throw new NotImplementedException("implement cross for Population");
     }
 }

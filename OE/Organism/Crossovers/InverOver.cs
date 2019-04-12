@@ -46,7 +46,6 @@ class InverOver : Crossover
                 if (HasNeighbour(s_, c, c_))
                 {
                     break;
-                    
                 }
 
                 //// odwróć w s_ ciąg od miasta za c do miasta c_

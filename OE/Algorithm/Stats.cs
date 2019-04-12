@@ -28,7 +28,7 @@ class Stats
     public void AfterEpoch()
     {
         historyEpochs.Add(new StatsEpoch(algorithm));
-        if (algorithm.CurrentEpoch%10 ==0) Console.WriteLine($"Epoch:{algorithm.CurrentEpoch} deviation: {algorithm.PopulationDeviation()} best: {algorithm.Best.Distance}");
+        // if (algorithm.CurrentEpoch%10 ==0) Console.WriteLine($"Epoch:{algorithm.CurrentEpoch} deviation: {algorithm.PopulationDeviation()} best: {algorithm.Best.Distance}");
     }
     public int NumEpochFromBest(double percentage)
     {
@@ -63,7 +63,8 @@ class Stats
         using (var stream = File.AppendText(filename))
         {
             stream.WriteLine(   $"{algorithm.CurrentEpoch};{time.ElapsedMilliseconds};{algorithm.population.Length};{algorithm.Best.GetTypeOfOrganism()};{algorithm.StopConditionType};"+
-                            $"{algorithm.selectionTypeName};{algorithm.mutation.mutationPercentage};{algorithm.PopulationDeviation()};");
+                            $"{algorithm.selectionTypeName};{algorithm.mutation.mutationPercentage};{algorithm.PopulationDeviation()};"+
+                            $"{algorithm.crossover.CrossoverTypeName};{algorithm.mutation.MutationTypeName};{algorithm.crossover.genotypeRepresentation};");
             stream.WriteLine("n_epoch;distance;PopulationDeviation;");
             for (int i = 0; i < historyEpochs.Count; i++)
             {

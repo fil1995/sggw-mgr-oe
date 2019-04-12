@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-class Organism:IComparable<Organism>
+class Organism : IComparable<Organism>
 {
     public uint[] genotype;
     public GenotypeRepresentation genotypeRepresentation { get; set; }
@@ -106,7 +106,7 @@ class Organism:IComparable<Organism>
         ret[0] = 0;
         for (int i = 1; i < adjecencyList.Length; i++)
         {
-            ret[i] = adjecencyList[ret[i-1]];
+            ret[i] = adjecencyList[ret[i - 1]];
         }
 
         return ret;
@@ -116,10 +116,10 @@ class Organism:IComparable<Organism>
     {
         uint[] ret = new uint[path.Length];
 
-        for (int i = 0; i < path.Length-1; i++)
+        for (int i = 0; i < path.Length - 1; i++)
         {
             uint from = path[i];
-            uint to = path[i+1];
+            uint to = path[i + 1];
             ret[from] = to;
         }
         // na końcu dodaję pętle
@@ -145,7 +145,7 @@ class Organism:IComparable<Organism>
                 // to jest ok
                 break;
             case GenotypeRepresentation.ADJACENCYLIST:
-                genotype =PathToAdjecencyList(OrdinalToPath(genotype));
+                genotype = PathToAdjecencyList(OrdinalToPath(genotype));
                 break;
             default:
                 break;
@@ -201,7 +201,7 @@ class Organism:IComparable<Organism>
                 genotypeRepresentation = GenotypeRepresentation.ADJACENCYLIST;
                 break;
             case GenotypeRepresentation.ORDINAL:
-                genotype =PathToAdjecencyList( OrdinalToPath(genotype));
+                genotype = PathToAdjecencyList(OrdinalToPath(genotype));
                 genotypeRepresentation = GenotypeRepresentation.ADJACENCYLIST;
                 // to jest ok
                 break;
@@ -226,8 +226,20 @@ class Organism:IComparable<Organism>
         {
             ret += String.Format("{0,2} ", item);
         }
-        ret += "}";
+        ret += "}-Phenotype";
         return ret;
+    }
+    public string Genotype
+    {
+        get {
+            string ret = "{";
+            foreach (uint item in genotype)
+            {
+                ret += String.Format("{0,2} ", item);
+            }
+            ret += "}-Genotype";
+            return ret;
+        }
     }
     public virtual string GetTypeOfOrganism()
     {
@@ -237,13 +249,14 @@ class Organism:IComparable<Organism>
     {
         get
         {
+            
             // sprawdzam czy fenotyp ma wszystkie miasta
             List<uint> list = new List<uint>();
-            for (uint i = 0; i < Phenotype.Length; i++)
+            for (uint i = 0; i < genotype.Length; i++)
             {
                 list.Add(i);
             }
-            foreach (uint city in genotype)
+            foreach (uint city in Phenotype)
             {
                 list.Remove(city);
             }
