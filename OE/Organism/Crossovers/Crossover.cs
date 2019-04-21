@@ -4,7 +4,7 @@ using System.Text;
 
 abstract class Crossover
 {
-    public string CrossoverTypeName => this.GetType().Name;
+    public virtual string CrossoverTypeName => this.GetType().Name;
     public virtual GenotypeRepresentation genotypeRepresentation => throw new NotImplementedException("define genotypeRepresentation");
     // tu ustalam czy działam na dwóch rodzicach, czy na całej populacji
     public virtual bool PopulationOrParents => false; // jeśli true to na populacji

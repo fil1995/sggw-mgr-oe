@@ -87,8 +87,8 @@ class Program
         Algorithm a = new Algorithm(random,
                                                                 new StopNumEpochs(100),
                                                                 new SelectionTournament(),
-                                                                new InverOver(0.1),
-                                                                new MutationNone(0.2),
+                                                                new InverOver(0.02),
+                                                                new MutationNone(0.25),
                                                                 new Cities("uy734.tsp"),
                                                                 100, true, false
                                                                 );
@@ -96,7 +96,7 @@ class Program
 
 
 
-        //Console.ReadKey();
+        Console.ReadKey();
         return ;
         // ArgStop Stop Select Cross MutationArg Mutation CitiesFile PopulationSize SaveFile
         /// czytanie z parametrów

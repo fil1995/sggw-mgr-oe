@@ -4,6 +4,7 @@ using System.Text;
 
 class InverOver : Crossover
 {
+    public override string CrossoverTypeName => $"{this.GetType().Name} {p}%";
     double p;
     public override GenotypeRepresentation genotypeRepresentation => GenotypeRepresentation.PATH;
     public override bool PopulationOrParents => true;
@@ -21,15 +22,13 @@ class InverOver : Crossover
             uint cIndex = (uint)r.Next(s_.Length);
             uint c = s_[cIndex];
 
-            uint c_Index;
             uint c_;
             while (true)
             {
                 if (r.NextDouble() < p)
                 {
                     // losuje drugie miasto w s_
-                    c_Index = (uint)r.Next(s_.Length);
-                    c_ = s_[c_Index];
+                    c_ = s_[r.Next(s_.Length)];
                 }
                 else
                 {
