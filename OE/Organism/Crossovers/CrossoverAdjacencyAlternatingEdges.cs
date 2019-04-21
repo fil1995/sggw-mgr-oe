@@ -90,28 +90,18 @@ class CrossoverAdjacencyAlternatingEdges : Crossover
                 //Console.WriteLine($"{i} - z samego do siebie nie");
                 continue;
             }
-
+            // jeśli jest to miasto gdzie już jest coś wpisane - też nie mogę
             if (used[i])
             {
                 //Console.WriteLine($"{i} - used");
                 continue;
             }
+            // jeśli jest to miasto, które nie jest wpisane, to sprawdzam jeszcze czy nie ma go już w genotypie i wtedy mogę tam iść
             if (!HasCity(genotype, i))
             {
                 //Console.WriteLine($"{i} - ok");
                 return i;
             }
-
-
-
-            //if (!HasCity(genotype, a.genotype[i]))
-            //{
-            //    return a.genotype[i];
-            //}
-            //if (!HasCity(genotype, b.genotype[i]))
-            //{
-            //    return b.genotype[i];
-            //}
         }
         throw new Exception("Nie ma wolnej krawędzi");
     }

@@ -10,19 +10,22 @@ class Program
         // Console.WriteLine(Type.GetType("SelectionRouletteRank"));
 
         //Cities c = new Cities("fm9.tsp");
-        //Organism o = new Organism(c, GenotypeRepresentation.ORDINAL);
+        //Organism o = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
         //o.SetRandomGenotype(random);
-        //Organism o2 = new Organism(c, GenotypeRepresentation.ORDINAL);
+        //o.genotype = new uint[] { 1 ,2, 7, 6, 8, 0, 3, 4, 5 };
+        //Organism o2 = new Organism(c, GenotypeRepresentation.ADJACENCYLIST);
         //o2.SetRandomGenotype(random);
+        //o2.genotype = new uint[] { 6, 4, 0, 5, 8, 1, 7, 3, 2 };
         //Console.WriteLine(o.Genotype + o);
         //Console.WriteLine(o2.Genotype + o2);
-        //Crossover cr = new CrossoverOrdinalSinglePoint();
+        //Crossover cr = new CrossoverAdjacencyAlternatingEdges();
         //Organism o3 = cr.Cross(o, o2, random);
         //Console.WriteLine(o3.Genotype + o3);
         //Console.WriteLine(o.IsVaild);
         //Console.WriteLine(o2.IsVaild);
         //Console.WriteLine(o3.IsVaild);
 
+        //Console.ReadKey();
         //Organism o4 = new Organism(c, GenotypeRepresentation.PATH);
         //o4.genotype = new uint[] { 0,1,2,3,4,5,6,7,8 };
 
@@ -78,8 +81,27 @@ class Program
         //                                                        )
         //                                        );
 
+
+
+
+        Algorithm a = new Algorithm(random,
+                                                                new StopNumEpochs(100),
+                                                                new SelectionTournament(),
+                                                                new InverOver(0.1),
+                                                                new MutationNone(0.2),
+                                                                new Cities("uy734.tsp"),
+                                                                100, true, false
+                                                                );
+        a.Run();
+
+
+
+        //Console.ReadKey();
+        return ;
         // ArgStop Stop Select Cross MutationArg Mutation CitiesFile PopulationSize SaveFile
         /// czytanie z parametrów
+        /// 
+
         StopCondition stopCondition = null ;
         double argument = double.Parse(args[0]);
 
@@ -181,14 +203,14 @@ class Program
         int numberRuns = int.Parse(args[8]);
         
 
-        Test01 t = new Test01(random, stopCondition,
-                               selectionType,
-                                crossover,
-                                mutation,
-                               cities,
-                                populationSize,
-                                numberRuns,
-                                args[9]);
+        Test01 t = new Test01(random,   stopCondition,
+                                        selectionType,
+                                        crossover,
+                                        mutation,
+                                        cities,
+                                        populationSize,
+                                        numberRuns,
+                                        args[9]);
 
 
 

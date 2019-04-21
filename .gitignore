@@ -2,3 +2,5 @@
 OE/bin
 OE/obj
 Sprawozdania
+ReportsScripts/*.csv
+ReportsScripts/*.png

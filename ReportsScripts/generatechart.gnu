@@ -15,7 +15,8 @@ set datafile separator ';'
 plot 	'PMX.csv' using 3 title 'PMX' with lines linewidth 3,\
 		'CX.csv' using 3 title 'CX' with lines linewidth 3,\
 		'OX.csv' using 3 title 'OX' with lines linewidth 3,\
+		'OrdinalSinglePoint.csv' using 3 title 'OrdinalSinglePoint' with lines linewidth 3,\
 		'AlternatingEdges.csv' using 3 title 'AlternatingEdges' with lines linewidth 3,\
 		'SubtourChunks.csv' using 3 title 'SubtourChunks' with lines linewidth 3,\
 		'InverOver.csv' using 3 title 'InverOver' with lines linewidth 3
-		
+

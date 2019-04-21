@@ -1,19 +1,22 @@
-$PATHtoOE = '..\OE\bin\Debug\netcoreapp2.1\publish\OE.exe';
+$OE = '..\OE\bin\Debug\netcoreapp2.1\publish\OE.exe';
 $PATHtoGNUPLOT = '..\..\gnuplot\bin\gnuplot.exe';
 
+$PATHtspFile = '..\tspFiles\uy734.tsp' # uy734  dj38
+
 $PopulationSize = 500;
-$Epochs = 1000;
-$Runs = 10;
+$Epochs = 100;
+$Runs = 2;
 
 
 
-& $PATHtoOE $Epochs StopNumEpochs SelectionRoulette 0,5 CrossoverAdjacencyAlternatingEdges  MutationAdjacencyUsingPathTwoOpt "..\tspFiles\dj38.tsp" $PopulationSize $Runs  AlternatingEdges.csv
-& $PATHtoOE $Epochs StopNumEpochs SelectionRoulette 0,5 CrossoverAdjacencySubtourChunks MutationAdjacencyUsingPathTwoOpt "..\tspFiles\dj38.tsp" $PopulationSize $Runs SubtourChunks.csv
-
-& $PATHtoOE $Epochs StopNumEpochs SelectionRoulette 0,5 CrossoverPathCX MutationPathTwoOpt "..\tspFiles\dj38.tsp" $PopulationSize $Runs CX.csv
-& $PATHtoOE $Epochs StopNumEpochs SelectionRoulette 0,5 CrossoverPathOX MutationPathTwoOpt "..\tspFiles\dj38.tsp" $PopulationSize $Runs OX.csv
-& $PATHtoOE $Epochs StopNumEpochs SelectionRoulette 0,5 CrossoverPathPMX MutationPathTwoOpt "..\tspFiles\dj38.tsp" $PopulationSize $Runs PMX.csv
-& $PATHtoOE $Epochs StopNumEpochs SelectionRoulette 0,5 InverOver MutationNone "..\tspFiles\dj38.tsp" $PopulationSize $Runs InverOver.csv
+#& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverAdjacencyAlternatingEdges  MutationAdjacencyUsingPathTwoOpt $PATHtspFile $PopulationSize $Runs  AlternatingEdges.csv
+#& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverAdjacencySubtourChunks MutationAdjacencyUsingPathTwoOpt $PATHtspFile $PopulationSize $Runs SubtourChunks.csv
+#& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverOrdinalSinglePoint MutationOridinalOnePoint $PATHtspFile $PopulationSize $Runs OrdinalSinglePoint.csv
+#& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverPathCX MutationPathTwoOpt $PATHtspFile $PopulationSize $Runs CX.csv
+#& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverPathOX MutationPathTwoOpt $PATHtspFile $PopulationSize $Runs OX.csv
+#& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverPathPMX MutationPathTwoOpt $PATHtspFile $PopulationSize $Runs PMX.csv
+& $OE $Epochs StopNumEpochs SelectionTournament 0,02 InverOver MutationNone $PATHtspFile $PopulationSize $Runs InverOver.csv
 
 
 & $PATHtoGNUPLOT "generatechart.gnu"
+

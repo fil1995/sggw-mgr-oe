@@ -18,16 +18,18 @@ class InverOver : Crossover
         {
             uint[] s_ = population[i].genotype;
             // wybierz losowo miasto c z s_
-            uint c = s_[r.Next(s_.Length)];
+            uint cIndex = (uint)r.Next(s_.Length);
+            uint c = s_[cIndex];
 
+            uint c_Index;
             uint c_;
             while (true)
             {
                 if (r.NextDouble() < p)
                 {
                     // losuje drugie miasto w s_
-                    c_ = s_[r.Next(s_.Length)];
-
+                    c_Index = (uint)r.Next(s_.Length);
+                    c_ = s_[c_Index];
                 }
                 else
                 {
@@ -52,14 +54,14 @@ class InverOver : Crossover
                 s_ = InvertSubTour(s_, FindIndex(s_, c), FindIndex(s_, c_));
 
                 c = c_;
-            } 
+            }
 
             // 
             Organism created = new Organism(population[0].TSPcities, population[0].genotypeRepresentation);
             created.genotype = s_;
             if (!created.IsVaild) throw new Exception("Błąd w InverOver przy tworzeniu osobnika");
 
-            if (created.Distance < population[i].Distance)
+            if (created.Distance <= population[i].Distance)
             {
                 population[i] = created;
             }
