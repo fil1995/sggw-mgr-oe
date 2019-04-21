@@ -17,7 +17,7 @@ class InverOver : Crossover
         // dla każdego osobnika w populacji
         for (int i = 0; i < population.Length; i++)
         {
-            uint[] s_ = population[i].genotype;
+            uint[] s_ = (uint[])population[i].genotype.Clone();
             // wybierz losowo miasto c z s_
             uint cIndex = (uint)r.Next(s_.Length);
             uint c = s_[cIndex];

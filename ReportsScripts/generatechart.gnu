@@ -1,5 +1,8 @@
-# set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0 size 600, 400 
-set term png size 2000, 1000
+set encoding utf8
+#set terminal svg size 600,400 dynamic enhanced font 'arial,10' mousing name "fillcrvs_1" butt dashlength 1.0 
+#set output 'fillcrvs.1.svg'
+
+set term png size 2000, 800
 
 set output 'out.png'
 
@@ -10,8 +13,6 @@ set ylabel "Odległość"
 
 set datafile separator ';'
 
-#set colorbox vertical origin screen 0.9, 0.2, 0 size screen 0.05, 0.6, 0 front  noinvert bdefault
-#plot [-pi/2:pi] cos(x),-(sin(x) > sin(x+1) ? sin(x) : sin(x+1))
 plot 	'PMX.csv' using 3 title 'PMX' with lines linewidth 3,\
 		'CX.csv' using 3 title 'CX' with lines linewidth 3,\
 		'OX.csv' using 3 title 'OX' with lines linewidth 3,\
