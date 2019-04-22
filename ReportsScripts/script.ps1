@@ -13,7 +13,7 @@ $Runs = 1;
 #& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverAdjacencySubtourChunks MutationAdjacencyUsingPathTwoOpt $PATHtspFile $PopulationSize $Runs SubtourChunks.csv
 #& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverOrdinalSinglePoint MutationOridinalOnePoint $PATHtspFile $PopulationSize $Runs OrdinalSinglePoint.csv
 #& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverPathCX MutationPathTwoOpt $PATHtspFile $PopulationSize $Runs CX.csv
-#& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverPathOX MutationPathTwoOpt $PATHtspFile $PopulationSize $Runs OX.csv
+& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverPathOX MutationPathTwoOpt $PATHtspFile $PopulationSize $Runs OX.csv
 #& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverPathPMX MutationPathTwoOpt $PATHtspFile $PopulationSize $Runs PMX.csv
 #& $OE $Epochs StopNumEpochs SelectionTournament 0,1 InverOver MutationNone $PATHtspFile $PopulationSize $Runs InverOver.csv
 

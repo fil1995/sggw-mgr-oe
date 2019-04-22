@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 // naprzemienne wybieranie podtras
 class CrossoverAdjacencySubtourChunks : Crossover

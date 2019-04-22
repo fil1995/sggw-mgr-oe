@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 // naprzemienne wybieranie krawędzi
 class CrossoverPathOX : Crossover
@@ -12,10 +11,16 @@ class CrossoverPathOX : Crossover
             throw new NotImplementedException("Reprezentacja genotypu nie zgadza sie z metodą krzyzowania");
 
         uint?[] genotype = new uint?[a.TSPcities.Length];
+        bool[] used = new bool[a.TSPcities.Length];
 
         // losujemy punkty podziału
         int cutPoint1 = r.Next(a.genotype.Length);
         int cutPoint2 = r.Next(a.genotype.Length);
+        // nie mogą być takie same
+        while (cutPoint1==cutPoint2)
+        {
+            cutPoint2 = r.Next(a.genotype.Length);
+        }
         if (cutPoint1 > cutPoint2)
         {
             int tmp = cutPoint1;
@@ -28,28 +33,32 @@ class CrossoverPathOX : Crossover
         for (int i = cutPoint1; i < cutPoint2; i++)
         {
             genotype[i] = a.genotype[i];
+            used[a.genotype[i]] = true; // ustawiam, że miasto jest już użyte
         }
         int indexGetFromB = cutPoint2;
 
         // teraz wypełniam po kolei z rodzica b, ale pomijam te co już były użyte
         for (int i = cutPoint2; i < a.genotype.Length; i++)
         {
-            while (HasCity(genotype,b.genotype[indexGetFromB]))
+            //while (HasCity(genotype,b.genotype[indexGetFromB]))
+            while (used[b.genotype[indexGetFromB]])
             {
                 indexGetFromB++;
                 if (indexGetFromB == b.genotype.Length) indexGetFromB = 0;
             }
             genotype[i] = b.genotype[indexGetFromB];
+            used[b.genotype[indexGetFromB]] = true;
         }
 
         for (int i = 0; i < cutPoint1; i++)
         {
-            while (HasCity(genotype, b.genotype[indexGetFromB]))
+            while (used[b.genotype[indexGetFromB]])
             {
                 indexGetFromB++;
                 if (indexGetFromB == b.genotype.Length) indexGetFromB = 0;
             }
             genotype[i] = b.genotype[indexGetFromB];
+            used[b.genotype[indexGetFromB]] = true;
         }
 
 
