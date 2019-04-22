@@ -29,13 +29,17 @@ class Program
         //Organism o4 = new Organism(c, GenotypeRepresentation.PATH);
         //o4.genotype = new uint[] { 0,1,2,3,4,5,6,7,8 };
 
-        //Test01 t = new Test01(random,   new StopNumEpochs(500),
+        //Test01 ta = new Test01(random, new StopNumEpochs(200),
         //                                new SelectionTournament(),
         //                                new CrossoverPathOX(),
         //                                new MutationPathTwoOpt(0.5),
-        //                                new Cities("wi29.tsp"),
-        //                                100);
-
+        //                                new Cities("uy734.tsp"),
+        //                                40,
+        //                                4,
+        //                                "plik.txt"
+        //                                );
+        //Console.ReadKey();
+        //return;
         ////////////////////// fm9  wi29  27603. dj38 6656    uy734   79114     lu980     11340     vm22775    569,288
 
         //Algorithm a = new Algorithm(random,
@@ -84,20 +88,20 @@ class Program
 
 
 
-        Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(100),
-                                                                new SelectionTournament(),
-                                                                new CrossoverPathOX(),
-                                                                new MutationNone(0.25),
-                                                                new Cities("uy734.tsp"),
-                                                                50, true, false
-                                                                );
-        a.Run();
+        //Algorithm a = new Algorithm(random,
+        //                                                        new StopNumEpochs(100),
+        //                                                        new SelectionTournament(),
+        //                                                        new CrossoverPathOX(),
+        //                                                        new MutationNone(0.25),
+        //                                                        new Cities("uy734.tsp"),
+        //                                                        50, true, false
+        //                                                        );
+        //a.Run();
 
 
 
-        Console.ReadKey();
-        return;
+        //Console.ReadKey();
+        //return;
         // ArgStop Stop Select Cross MutationArg Mutation CitiesFile PopulationSize SaveFile
         /// czytanie z parametrów
         /// 

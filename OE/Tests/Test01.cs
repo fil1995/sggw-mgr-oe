@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 class Test01
 {
+    private readonly object globalLock = new object();
     Random r;
     int numOfRuns;
     int epochs;
@@ -51,16 +52,33 @@ class Test01
     {
         for (int i = 0; i < history.Length; i++)
         {
-            history[i] = RunAlgorithm();
+            history[i] = RunAlgorithm(r);
             Console.WriteLine($"{i}\' run ");
         }
+
+
+        //ParallelOptions po = new ParallelOptions();
+        ////po.MaxDegreeOfParallelism = 4;
+
+        //Parallel.For<Random>(0, history.Length, po,
+        //    () => { lock (globalLock) { return new Random(r.Next()); } },
+        //    (i, loop, local) =>
+        //    {
+        //        history[i] = RunAlgorithm(local);
+        //        Console.WriteLine($"{i}\' run ");
+        //        return local;
+        //    },
+        //        (x) => { }
+        //);
+
+
 
         ComputeStats();
         SaveStats(fileName);
 
     }
 
-    Stats RunAlgorithm()
+    Stats RunAlgorithm(Random r)
     {
         Algorithm a = new Algorithm(r,
                                     stopCondition,

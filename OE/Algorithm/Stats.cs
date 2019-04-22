@@ -28,7 +28,7 @@ class Stats
     public void AfterEpoch()
     {
         historyEpochs.Add(new StatsEpoch(algorithm));
-        if (algorithm.CurrentEpoch%10 ==0) Console.WriteLine($"Epoch:{algorithm.CurrentEpoch} deviation: {algorithm.PopulationDeviation()} best: {algorithm.Best.Distance}");
+        if (algorithm.CurrentEpoch%100 ==0) Console.WriteLine($"Epoch:{algorithm.CurrentEpoch} deviation: {algorithm.PopulationDeviation()} best: {algorithm.Best.Distance}");
     }
     public int NumEpochFromBest(double percentage)
     {

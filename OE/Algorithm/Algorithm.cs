@@ -84,10 +84,10 @@ class Algorithm
             // musze wygenerowac nową populacje
             Organism[] newPopulation = new Organism[population.Length];
 
-            //for (int i = 0; i < population.Length; i++)
-            //{
-            //    newPopulation[i] = CreateChild();
-            //}
+            for (int i = 0; i < population.Length; i++)
+            {
+                newPopulation[i] = CreateChild(r);
+            }
 
             //System.Threading.Tasks.Parallel.For(0, population.Length, i =>
             //{
@@ -96,18 +96,18 @@ class Algorithm
 
 
             /////////////////////////////////////////////
-            ParallelOptions po = new ParallelOptions();
-            //po.MaxDegreeOfParallelism = 4;
+            //ParallelOptions po = new ParallelOptions();
+            ////po.MaxDegreeOfParallelism = 4;
 
-            Parallel.For<Random>(0, population.Length, po,
-                () => { lock (globalLock) { return new Random(r.Next()); } },
-                (i, loop, local) =>
-                {
-                    newPopulation[i] = CreateChild(local);
-                    return local;
-                },
-                    (x) => { }
-            );
+            //Parallel.For<Random>(0, population.Length, po,
+            //    () => { lock (globalLock) { return new Random(r.Next()); } },
+            //    (i, loop, local) =>
+            //    {
+            //        newPopulation[i] = CreateChild(local);
+            //        return local;
+            //    },
+            //        (x) => { }
+            //);
 
             /////////////////////////////////////////////
 

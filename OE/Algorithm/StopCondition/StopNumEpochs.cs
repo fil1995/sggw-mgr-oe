@@ -9,7 +9,7 @@ class StopNumEpochs : StopCondition
     }
     public override bool Stop()
     {
-        if (a.CurrentEpoch == epochs)
+        if (a.CurrentEpoch >= epochs)
         {
             return true;
         }
