@@ -5,7 +5,7 @@ $PATHtspFile = '..\tspFiles\uy734.tsp' # uy734  dj38
 
 $PopulationSize = 40;
 $Epochs = 10000;
-$Runs = 1;
+$Runs = 5;
 
 #MutationAdjacencyUsingPathTwoOpt
 

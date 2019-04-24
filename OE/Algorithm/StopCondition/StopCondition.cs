@@ -7,12 +7,21 @@ abstract class StopCondition : IStopCondition
 
     public void Initialize(Algorithm a)
     {
+        if (this.a!=null)
+        {
+            throw new Exception("Warunek stopu wykorzystywany kolejny raz!!!");
+        }
         this.a = a;
         
     }
 
     public virtual bool Stop()
     {
-        return true;
+        throw new Exception("brak implementacji stopu");
     }
+    public StopCondition Clone()
+    {
+        return (StopCondition)this.MemberwiseClone();
+    }
+
 }

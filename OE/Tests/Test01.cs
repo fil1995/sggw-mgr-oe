@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 class Test01
@@ -50,26 +48,26 @@ class Test01
     }
     void RunTest()
     {
-        for (int i = 0; i < history.Length; i++)
-        {
-            history[i] = RunAlgorithm(r);
-            Console.WriteLine($"{i}\' run ");
-        }
+        //for (int i = 0; i < history.Length; i++)
+        //{
+        //    history[i] = RunAlgorithm(r);
+        //    Console.WriteLine($"{i}\' run ");
+        //}
 
 
-        //ParallelOptions po = new ParallelOptions();
-        ////po.MaxDegreeOfParallelism = 4;
+        ParallelOptions po = new ParallelOptions();
+        //po.MaxDegreeOfParallelism = 4;
 
-        //Parallel.For<Random>(0, history.Length, po,
-        //    () => { lock (globalLock) { return new Random(r.Next()); } },
-        //    (i, loop, local) =>
-        //    {
-        //        history[i] = RunAlgorithm(local);
-        //        Console.WriteLine($"{i}\' run ");
-        //        return local;
-        //    },
-        //        (x) => { }
-        //);
+        Parallel.For<Random>(0, history.Length, po,
+            () => { lock (globalLock) { return new Random(r.Next()); } },
+            (i, loop, local) =>
+            {
+                history[i] = RunAlgorithm(local);
+                Console.WriteLine($"{i}\' run ");
+                return local;
+            },
+                (x) => { }
+        );
 
 
 
@@ -80,8 +78,9 @@ class Test01
 
     Stats RunAlgorithm(Random r)
     {
+        StopCondition stop = stopCondition.Clone();
         Algorithm a = new Algorithm(r,
-                                    stopCondition,
+                                    stop,
                                     selectionType, 
                                     crossover,
                                     mutation,
@@ -93,9 +92,15 @@ class Test01
 
     void ComputeStats()
     {
-        
-        /// zawsze stała liczba epok
         epochs = history[0].historyEpochs.Count;
+        for (int i = 1; i < history.Length; i++)
+        {
+            if (epochs> history[i].historyEpochs.Count) // znajduje tam gdzie najmniej epok
+            {
+                epochs = history[i].historyEpochs.Count;
+            }
+        }
+
         epochsAvg = new double[epochs];
         epochsAvgDeviation = new double[epochs];
         epochsMin = new double[epochs];
@@ -145,32 +150,5 @@ class Test01
                 stream.WriteLine($"{i};{epochsAvgDeviation[i]};{epochsAvg[i]};{epochsMin[i]};{epochsMax[i]};");
             }
         }
-
-
-    }
-
-    static double Mediana(List<double> wyniki)
-    {
-        wyniki.Sort();
-        if (wyniki.Count % 2 == 0)
-            return wyniki[wyniki.Count / 2];
-        else
-            return (wyniki[wyniki.Count / 2] + wyniki[1 + (wyniki.Count / 2)]) / 2;
-    }
-    static double OdchylenieStandardowe(List<double> wyniki)
-    {
-        double srednia = wyniki.Average();
-        double suma = 0;
-        for (int i = 0; i < wyniki.Count; i++)
-        {
-            suma += Math.Pow(wyniki[i] - srednia, 2);
-        }
-        return Math.Sqrt(suma / wyniki.Count);
-    }
-    static Tuple<double, double> PrzedzialUfnosci(List<double> wyniki)
-    {
-        /// dla 95%
-        /// 
-        return new Tuple<double, double>(wyniki.Average() - OdchylenieStandardowe(wyniki) * 1.96, wyniki.Average() + OdchylenieStandardowe(wyniki) * 1.96);
     }
 }
