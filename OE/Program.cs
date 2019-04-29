@@ -88,20 +88,20 @@ class Program
 
 
 
-        //Algorithm a = new Algorithm(random,
-        //                                                        new StopNumEpochs(100),
-        //                                                        new SelectionTournament(),
-        //                                                        new CrossoverPathOX(),
-        //                                                        new MutationNone(0.25),
-        //                                                        new Cities("uy734.tsp"),
-        //                                                        50, true, false
-        //                                                        );
-        //a.Run();
+        Algorithm a = new Algorithm(random,
+                                                                new StopNumEpochs(1500),
+                                                                new SelectionTournament(),
+                                                                new CrossoverPathPMX(),
+                                                                new MutationPathTwoOpt(0.1),
+                                                                new Cities("wi29.tsp"),
+                                                                800, true, false
+                                                                );
+        a.Run();
 
 
 
-        //Console.ReadKey();
-        //return;
+        Console.ReadKey();
+        return;
         // ArgStop Stop Select Cross MutationArg Mutation CitiesFile PopulationSize SaveFile
         /// czytanie z parametrów
         /// 
