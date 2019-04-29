@@ -89,11 +89,11 @@ class Program
 
 
         Algorithm a = new Algorithm(random,
-                                                                new StopNumEpochs(1500),
+                                                                new StopTime(60),
                                                                 new SelectionTournament(),
                                                                 new CrossoverPathPMX(),
                                                                 new MutationPathTwoOpt(0.1),
-                                                                new Cities("wi29.tsp"),
+                                                                new Cities("uy734.tsp"),
                                                                 800, true, false
                                                                 );
         a.Run();

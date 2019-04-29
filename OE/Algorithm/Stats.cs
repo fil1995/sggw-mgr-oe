@@ -17,9 +17,9 @@ class Stats
     {
         time.Start();
     }
-    public long ElapsedMilliseconds
+    public double ElapsedSeconds
     {
-        get { return time.ElapsedMilliseconds; }
+        get { return time.Elapsed.TotalSeconds; }
     }
     public void StopLogging()
     {
@@ -28,7 +28,7 @@ class Stats
     public void AfterEpoch()
     {
         historyEpochs.Add(new StatsEpoch(algorithm));
-        if (algorithm.CurrentEpoch%100 ==0) Console.WriteLine($"Epoch:{algorithm.CurrentEpoch} deviation: {algorithm.PopulationDeviation()} best: {algorithm.Best.Distance}");
+        if (algorithm.CurrentEpoch%100 ==0) Console.WriteLine($"Epoch:{algorithm.CurrentEpoch} deviation: {algorithm.PopulationDeviation()} best: {algorithm.Best.Distance} time: {algorithm.stats.ElapsedSeconds}");
     }
     public int NumEpochFromBest(double percentage)
     {

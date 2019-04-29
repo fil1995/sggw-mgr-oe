@@ -4,14 +4,11 @@ struct StatsEpoch
 {
     public Organism best;
     public double populationDeviation;
-    public long time;
-    //public double populationMin;
-    //public double populationMax;
-    //public double populationAvg;
+    public double time;
     public StatsEpoch(Algorithm a)
     {
         best = a.Best;
         populationDeviation = a.PopulationDeviation();
-        time = a.stats.ElapsedMilliseconds;
+        time = a.stats.ElapsedSeconds;
     }
 }

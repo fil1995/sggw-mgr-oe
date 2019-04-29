@@ -3,13 +3,13 @@
 class StopTime : StopCondition
 {
     int time;
-    public StopTime(int time)
+    public StopTime(int timeSeconds)
     {
-        this.time = time;
+        this.time = timeSeconds;
     }
     public override bool Stop()
     {
-        if (a.stats.ElapsedMilliseconds > time)
+        if (a.stats.ElapsedSeconds > time)
         {
             return true;
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 class Algorithm
 {
@@ -88,29 +87,6 @@ class Algorithm
             {
                 newPopulation[i] = CreateChild(r);
             }
-
-            //System.Threading.Tasks.Parallel.For(0, population.Length, i =>
-            //{
-            //    newPopulation[i] = CreateChild();
-            //});
-
-
-            /////////////////////////////////////////////
-            //ParallelOptions po = new ParallelOptions();
-            ////po.MaxDegreeOfParallelism = 4;
-
-            //Parallel.For<Random>(0, population.Length, po,
-            //    () => { lock (globalLock) { return new Random(r.Next()); } },
-            //    (i, loop, local) =>
-            //    {
-            //        newPopulation[i] = CreateChild(local);
-            //        return local;
-            //    },
-            //        (x) => { }
-            //);
-
-            /////////////////////////////////////////////
-
             population = newPopulation;
         }
         // sprawdzamy czy selekcja wymaga posortowanej populacji
@@ -127,23 +103,17 @@ class Algorithm
         Organism selA = selectionType.Select(r, population); // SelectOrganism();
         Organism selB = selectionType.Select(r, population); // SelectOrganism();
 
-
-        // Organism newOrganism = selA.RecombinationWithMutation(selB, r, mutationPercentage);
-
-        //return newOrganism;
-
-        // Organism newOrganism = Organism.Recombination(selA, selB, r).Mutation(r, mutationPercentage);
         Organism newOrganism = crossover.Cross(selA, selB, r);
 
         mutation.Mutate(newOrganism, r);
 
         // i tak aby znaleźć najelpszego musimy znać fitnessy każego
-        double calculateOnly = newOrganism.Fitness;
+        // double calculateOnly = newOrganism.Fitness;
 
-        if (!newOrganism.IsVaild)
-        {
-            throw new Exception("Nieprawidłowy osobnik!!!");
-        }
+        //if (!newOrganism.IsVaild)
+        //{
+        //    throw new Exception("Nieprawidłowy osobnik!!!");
+        //}
 
         return newOrganism;
     }
