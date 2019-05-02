@@ -88,43 +88,51 @@ class Program
 
 
 
-        Algorithm a = new Algorithm(random,
-                                                                new StopTime(60),
-                                                                new SelectionTournament(),
-                                                                new CrossoverPathPMX(),
-                                                                new MutationPathTwoOpt(0.1),
-                                                                new Cities("uy734.tsp"),
-                                                                800, true, false
-                                                                );
-        a.Run();
-
-
-
-        Console.ReadKey();
-        return;
+        //Algorithm a = new Algorithm(random,
+        //                                                        new StopTime(60),
+        //                                                        new SelectionTournament(),
+        //                                                        new CrossoverPathPMX(),
+        //                                                        new MutationPathTwoOpt(0.1),
+        //                                                        new Cities("uy734.tsp"),
+        //                                                        800, true, false
+        //                                                        );
+        //a.Run();
+        //Console.ReadKey();
+        //return;
         // ArgStop Stop Select Cross MutationArg Mutation CitiesFile PopulationSize SaveFile
         /// czytanie z parametrów
         /// 
+        //      0           1           2           3           4           5               6               7               8
+        ///     DATAstopu   StopArg     StopType    selectType  CrossArg    CrossType       MutationArg     MutationType    PopulationSize 
+        ///     
+        ///     9           10          11
+        ///     NumberRuns  TspFile     outFile
 
-        StopCondition stopCondition = null ;
-        double argument = double.Parse(args[0]);
+        /// wczytanie danych z wytycznych z wykładu
+        // data stopu
+        DateTime date =Convert.ToDateTime(args[0]);
 
-        switch (args[1])
+
+
+        StopCondition stopCondition = null;
+        double argument = double.Parse(args[1]);
+
+        switch (args[2])
         {
             case "StopNumEpochs":
-                stopCondition = new StopNumEpochs(Convert.ToInt32(argument));
+                stopCondition = new StopNumEpochs(Convert.ToInt32(argument),date);
                 break;
             case "StopPopulationDeviation":
                 stopCondition = new StopPopulationDeviation(argument);
                     break;
             case "StopTime":
-                stopCondition = new StopTime(Convert.ToInt32(argument));
+                stopCondition = new StopTime(Convert.ToInt32(argument),date);
                 break;
             default:
                 break;
         }
         SelectionType selectionType=null;
-        switch (args[2])
+        switch (args[3])
         {
             case "SelectionRoulette":
                 selectionType = new SelectionRoulette();
@@ -139,18 +147,13 @@ class Program
                 Console.WriteLine("brak selection type");
                 break;
         }
+
         Crossover crossover=null;
-        
-
-        argument = double.Parse(args[3]);
-
-
-        Console.WriteLine(args[4]);
-        switch (args[4])
+        argument = double.Parse(args[4]);
+        switch (args[5])
         {
             case "CrossoverAdjacencyAlternatingEdges":
                 crossover = new CrossoverAdjacencyAlternatingEdges();
-
                 break;
             case "CrossoverAdjacencySubtourChunks":
                 crossover = new CrossoverAdjacencySubtourChunks();
@@ -175,12 +178,10 @@ class Program
                 break;
         }
 
-
-
         Mutation mutation=null;
 
-        Console.WriteLine(args[5]);
-        switch (args[5])
+        argument = double.Parse(args[6]);
+        switch (args[7])
         {
             case "MutationAdjacencyUsingPathTwoOpt":
                 mutation = new MutationAdjacencyUsingPathTwoOpt(argument);
@@ -199,13 +200,15 @@ class Program
                 break;
             default:
                 Console.WriteLine("brak mutation type");
+                mutation = new MutationNone(argument);
                 break;
         }
-        Cities cities = new Cities(args[6]);
 
-        int populationSize = int.Parse(args[7]);
-        int numberRuns = int.Parse(args[8]);
-        
+        int populationSize = int.Parse(args[8]);
+        int numberRuns = int.Parse(args[9]);
+
+        Cities cities = new Cities(args[10]);
+
 
         Test01 t = new Test01(random,   stopCondition,
                                         selectionType,
@@ -214,7 +217,7 @@ class Program
                                         cities,
                                         populationSize,
                                         numberRuns,
-                                        args[9]);
+                                        args[11]);
 
 
 

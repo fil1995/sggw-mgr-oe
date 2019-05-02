@@ -48,26 +48,26 @@ class Test01
     }
     void RunTest()
     {
-        //for (int i = 0; i < history.Length; i++)
-        //{
-        //    history[i] = RunAlgorithm(r);
-        //    Console.WriteLine($"{i}\' run ");
-        //}
+        for (int i = 0; i < history.Length; i++)
+        {
+            history[i] = RunAlgorithm(r);
+            Console.WriteLine($"{i}\' run ");
+        }
 
 
-        ParallelOptions po = new ParallelOptions();
-        //po.MaxDegreeOfParallelism = 4;
+        //ParallelOptions po = new ParallelOptions();
+        ////po.MaxDegreeOfParallelism = 4;
 
-        Parallel.For<Random>(0, history.Length, po,
-            () => { lock (globalLock) { return new Random(r.Next()); } },
-            (i, loop, local) =>
-            {
-                history[i] = RunAlgorithm(local);
-                Console.WriteLine($"{i}\' run ");
-                return local;
-            },
-                (x) => { }
-        );
+        //Parallel.For<Random>(0, history.Length, po,
+        //    () => { lock (globalLock) { return new Random(r.Next()); } },
+        //    (i, loop, local) =>
+        //    {
+        //        history[i] = RunAlgorithm(local);
+        //        Console.WriteLine($"{i}\' run ");
+        //        return local;
+        //    },
+        //        (x) => { }
+        //);
 
 
 

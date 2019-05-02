@@ -3,13 +3,15 @@
 class StopTime : StopCondition
 {
     int time;
-    public StopTime(int timeSeconds)
+    DateTime dateEnd;
+    public StopTime(int timeSeconds,DateTime dateEnd)
     {
         this.time = timeSeconds;
+        this.dateEnd = dateEnd;
     }
     public override bool Stop()
     {
-        if (a.stats.ElapsedSeconds > time)
+        if (a.stats.ElapsedSeconds > time || DateTime.Now>dateEnd)
         {
             return true;
         }
