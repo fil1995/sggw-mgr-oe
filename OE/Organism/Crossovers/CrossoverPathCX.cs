@@ -22,7 +22,6 @@ class CrossoverPathCX : Crossover
             uint position = CityIndex(a.genotype, b.genotype[index]);
             genotype[position] = b.genotype[index];
             index = position;
-
         }
         
         // teraz tam gdzie nulle, to przepisuje z rodzica b

@@ -55,7 +55,6 @@ class Algorithm
     {
         GeneratePopulation();
         stats.StartLogging();
-        if (verbose2) Console.WriteLine(GetPopulationValues());
         while (!stopCondition.Stop())
         {
             RunEpoch();

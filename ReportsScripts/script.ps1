@@ -1,15 +1,16 @@
 $OE = '..\OE\bin\Debug\netcoreapp2.1\publish\OE.exe';
 $PATHtoGNUPLOT = '..\..\gnuplot\bin\gnuplot.exe';
 
-$PATHtspFile = '..\tspFiles\uy734.tsp' # uy734  dj38
+$PATHtspFile = '..\tspFiles\wi29.tsp' # uy734  dj38
 
-$PopulationSize = 40;
-$Epochs = 100;
-$Runs = 5;
+$PopulationSize = 1000;
+$Epochs = 1000;
+$Runs = 1;
 $DATAstopu="2019-07-01 00:00:00";
 #MutationAdjacencyUsingPathTwoOpt
 
-& $OE $DATAstopu $Epochs StopNumEpochs SelectionTournament 0 CrossoverAdjacencyAlternatingEdges 0,5 MutationAdjacencyUsingPathTwoOpt $PopulationSize $Runs $PATHtspFile AlternatingEdges2.csv
+& $OE $DATAstopu $Epochs StopNumEpochs SelectionRoulette 0 CrossoverPathPMX 0,5 MutationPathTwoOpt $PopulationSize $Runs $PATHtspFile PMX2.csv
+& $OE $DATAstopu $Epochs StopNumEpochs SelectionRoulette 0 CrossoverPathOX 0,5 MutationPathTwoOpt $PopulationSize $Runs $PATHtspFile OX2.csv
 
 #& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverAdjacencyAlternatingEdges  MutationAdjacencyUsingPathTwoOpt $PATHtspFile $PopulationSize $Runs  AlternatingEdges.csv
 #& $OE $Epochs StopNumEpochs SelectionTournament 0,1 CrossoverAdjacencySubtourChunks MutationAdjacencyUsingPathTwoOpt $PATHtspFile $PopulationSize $Runs SubtourChunks.csv
